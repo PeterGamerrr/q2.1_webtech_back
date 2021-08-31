@@ -1,0 +1,61 @@
+### list all products
+GET http://localhost:80/api/products
+Accept: application/json
+
+### get product with id 0
+GET http://localhost:80/api/products/0
+Accept: application/json
+
+### filter on multiple types
+GET http://localhost:80/api/products?region=Enschede&brand=Heineken&capacity=33
+Accept: application/json
+
+### create a bid
+POST http://localhost:80/api/product/0/bids
+Content-Type: application/json
+
+{
+  "price": 0
+}
+
+### remove a bid
+DELETE http://localhost:80/api/bids/0
+Accept: application/json
+
+### get all bids where the user has won
+GET http://localhost:80/api/users/0/bids?hasWon=true
+Accept: application/json
+
+### create an auction
+POST http://localhost:80/api/auctions
+Content-Type: application/json
+
+{
+  "name": "beer"
+}
+
+### remove an auction
+DELETE http://localhost:80/api/auctions/0
+Accept: application/json
+
+### update an auction
+PATCH http://localhost:80/api/0
+Content-Type: application/json
+
+{
+  "name": "biertje"
+}
+
+### create a user
+POST http://localhost:80/api/item
+Content-Type: application/json
+
+{
+  "name": "jantje",
+  "email": "gekkie@gmail.com",
+  "password": "2021@1234567890qwertyuiop"
+}
+
+### limit amount of results
+GET http://localhost:80/api/bids?limit=100
+Accept: application/json
