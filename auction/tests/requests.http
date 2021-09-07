@@ -2,6 +2,14 @@
 GET http://localhost:80/api/products
 Accept: application/json
 
+> {%
+ client.test(
+     "test",
+     () => {
+         client.assert(response.status === 200, "status check")
+     })
+ %}
+
 ### get product with id 0
 GET http://localhost:80/api/products/0
 Accept: application/json
@@ -50,6 +58,10 @@ accept: application/json
 {
   "name": "biertje"
 }
+
+### get user list (TEMP)
+GET http://localhost:80/api/users
+accept: application/json
 
 ### create a user
 POST http://localhost:80/api/account
