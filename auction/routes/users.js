@@ -3,10 +3,10 @@ const router = express.Router();
 const debug = require('debug')('auction:server');
 const fs = require('fs');
 
-let users;
+//example (temp)
 fs.readFile('./storage/users.json', (err, data) => {
   if (err) throw err;
-  users = JSON.parse(data);
+  let users = JSON.parse(data);
 })
 
 
