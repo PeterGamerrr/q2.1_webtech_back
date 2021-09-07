@@ -13,6 +13,8 @@ Accept: application/json
 ### create a bid
 POST http://localhost:80/api/product/0/bids
 Content-Type: application/json
+accept: application/json
+
 
 {
   "price": 0
@@ -29,6 +31,8 @@ Accept: application/json
 ### create an auction
 POST http://localhost:80/api/auctions
 Content-Type: application/json
+accept: application/json
+
 
 {
   "name": "beer"
@@ -41,14 +45,16 @@ Accept: application/json
 ### update an auction
 PATCH http://localhost:80/api/0
 Content-Type: application/json
+accept: application/json
 
 {
   "name": "biertje"
 }
 
 ### create a user
-POST http://localhost:80/api/item
+POST http://localhost:80/api/account
 Content-Type: application/json
+accept: application/json
 
 {
   "name": "jantje",
