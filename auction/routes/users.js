@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const debug = require('debug')('auction:server');
 const fs = require('fs');
 
 let users;
@@ -14,5 +15,7 @@ router.get('/', function(req, res, next) {
   res.status(200)
   res.json(users);
 });
+
+//todo: write a saving script on shutdown
 
 module.exports = router;
