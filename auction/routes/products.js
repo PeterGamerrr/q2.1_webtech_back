@@ -3,14 +3,8 @@ const router = express.Router();
 const StatusCodes = require("http-status-codes");
 let products = require("../storage/products")
 
-router.get('/', async (req, res) => {
-    try {
-        console.log("read products.js")
-        await res.status(StatusCodes.OK)
-    } catch (e) {
-        console.error(e);
-        await res.status(StatusCodes.BAD_REQUEST)
-    }
+router.get('/', (req, res) => {
+    res.status(StatusCodes.OK)
     res.send(products);
 })
 
