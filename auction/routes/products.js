@@ -5,7 +5,7 @@ const StatusCodes = require("http-status-codes");
 router.get('/', async (req, res) => {
     let products;
     try {
-        products = await require("../storage/products")
+        products = require("../storage/products")
         console.log("read products.js")
         await res.status(StatusCodes.OK)
     } catch (e) {
