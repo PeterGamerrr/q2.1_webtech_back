@@ -8,6 +8,6 @@ let roles = [
         name: "Admin",
 
     },
-]
+];
 
 module.exports = roles;

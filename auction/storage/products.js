@@ -17,6 +17,6 @@ let products = [
     brand: "Grolsch",
     capacity: 33,
   },
-]
+];
 
 module.exports = products;
