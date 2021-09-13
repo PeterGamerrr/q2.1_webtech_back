@@ -1,19 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const debug = require("debug")("auction:server");
-const fs = require("fs");
-const {StatusCodes} = require("http-status-codes");
-
+const { StatusCodes } = require("http-status-codes");
+const users = require("../storage/users");
 
 router.get("/", (req, res) => {
-    let users;
-    try {
-        users = require("../storage/users");
-        res.status(StatusCodes.OK);
-    } catch (e) {
-        res.status(StatusCodes.BAD_REQUEST);
-    }
-    res.send(users);
+    res
+        .status(StatusCodes.OK)
+        .send(users);
 });
 
 module.exports = router;
