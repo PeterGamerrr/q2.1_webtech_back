@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const StatusCodes = require("http-status-codes");
+let products = require("../storage/products")
 
 router.get('/', async (req, res) => {
-    let products;
     try {
-        products = await require("../storage/products")
         console.log("read products.js")
         await res.status(StatusCodes.OK)
     } catch (e) {
@@ -16,7 +15,7 @@ router.get('/', async (req, res) => {
 })
 
 router.get("/:id" , async (req, res) => {
-    req.query.id
+    let id = req.query.id;
 })
 
 module.exports = router;
