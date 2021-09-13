@@ -21,4 +21,8 @@ router.get('/', async (req, res) => {
     res.send(products);
 })
 
+router.get("/:id" , async (req, res) => {
+    req.query.id
+})
+
 module.exports = router;

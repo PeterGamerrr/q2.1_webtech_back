@@ -19,7 +19,7 @@ GET http://localhost:3000/api/products?region=Enschede&brand=Heineken&capacity=3
 Accept: application/json
 
 ### create a bid
-POST http://localhost:3000/api/product/0/bids
+POST http://localhost:3000/api/products/0/bids
 Content-Type: application/json
 accept: application/json
 
