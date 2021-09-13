@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/'             , indexRouter);
 app.use('/api/users'    , usersRouter);
 app.use('/api/bids'     , auctionRouter);
-app.use('/api/auctions.json' , bidsRouter);
+app.use('/api/auctions.js' , bidsRouter);
 app.use('/api/products' , productsRouter);
 
 module.exports = app;
