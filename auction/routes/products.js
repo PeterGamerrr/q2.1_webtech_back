@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const StatusCodes = require("http-status-codes");
 let products = require("../storage/products")
 
-router.get('/', (req, res) => {
+router.get("/", (req, res) => {
     res.status(StatusCodes.OK)
     res.send(products);
 })

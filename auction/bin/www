@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const app = require('../app');
-const debug = require('debug')('auction:server');
+const app = require("../app");
+const debug = require("debug")("auction:server");
 
 const port = 3000;
 

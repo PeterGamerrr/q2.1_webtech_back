@@ -1,11 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const debug = require('debug')('auction:server');
-const fs = require('fs');
+const debug = require("debug")("auction:server");
+const fs = require("fs");
 const {StatusCodes} = require("http-status-codes");
 
 
-router.get('/', (req, res) => {
+router.get("/", (req, res) => {
     let users;
     try {
         users = require("../storage/users");

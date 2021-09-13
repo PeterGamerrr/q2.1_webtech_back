@@ -1,11 +1,11 @@
 let roles = [
     {
         id: 0,
-        name: 'user',
+        name: "user",
     },
     {
         Id: 1,
-        name: 'Admin',
+        name: "Admin",
 
     },
 ]
