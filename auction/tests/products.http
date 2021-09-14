@@ -1,0 +1,10 @@
+### get product 0
+GET http://localhost:3000/api/products/0
+Accept: application/json
+
+> {%
+client.test("testing if product 0 works", function() {
+    client.assert(response.status === 200, "product 0 works" )
+});
+%}
+###
