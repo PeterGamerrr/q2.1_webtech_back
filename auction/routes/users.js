@@ -69,7 +69,6 @@ router.put("/:id", (req, res) => {
 
 
 router.patch("/:id", (req, res) => {
-    let id = req.params.id;
     let newUser = req.body;
     if (!checkUserValidity(newUser)) {
         res
@@ -77,6 +76,7 @@ router.patch("/:id", (req, res) => {
             .send("User not valid");
     }
 
+    let id = req.params.id;
     let user = users.find(user => user.id === id);
     if (user == undefined) {
         res
@@ -94,14 +94,14 @@ router.patch("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
     let id = req.params.id;
 
-    let userId = users.findIndex(user => user.id === id);
-    if (userId == -1) {
+    let userIndex = users.findIndex(user => user.id === id);
+    if (userIndex == -1) {
         res
             .status(StatusCodes.BAD_REQUEST)
             .send("User not found");
     }
 
-    users.splice(userId, 1);
+    users.splice(userIndex, 1);
 
     res
         .status(StatusCodes.NO_CONTENT)
@@ -126,35 +126,35 @@ function checkUserValidity(user, allFields = false, excludeGenerated = false) {
         checkFields[key] = true;
 
         if (key == "id" && (
-            typeof val == "number" ||
+            typeof val !== "number" ||
             val < 0)) {
             return false;
         }
         else if (key == "username" && (
-            typeof val === "string" ||
+            typeof val !== "string" ||
             val.length < 3 ||
             val.length > 200)) {
             return false;
         }
         else if (key == "email" && (
-            typeof val === "string" ||
+            typeof val !== "string" ||
             val.length < 3 ||
             val.length > 200 ||
             !val.includes("@"))) {
             return false;
         }
         else if (key == "password" && (
-            typeof val === "string" ||
+            typeof val !== "string" ||
             val.length != 60 ||
             !val.startsWith("$2a$10$"))) {
             return false;
         }
-        else if (e == "secret" && (
-            typeof val === "string" ||
+        else if (key == "secret" && (
+            typeof val !== "string" ||
             val.length != 36)) {
             return false;
         }
-        else {
+        else if (!fields.includes(key)) {
             return false;
         }
     });
