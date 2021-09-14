@@ -1,7 +1,7 @@
 const {v4:uuidv4} = require("uuid");
 
 let fields = [
-    "id", "username", "email", "password", "secret"
+    "id", "username", "email", "password"
 ];
 
 let users = [

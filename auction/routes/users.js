@@ -15,8 +15,8 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
     let id = req.params.id;
     let user = users.find(user => user.id == id);
-    if (user == undefined) {
-        res
+    if (user === undefined) {
+        return res
             .status(StatusCodes.BAD_REQUEST)
             .send("User not found");
     }
@@ -29,8 +29,8 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
     let newUser = req.body;
-    if (!checkUserValidity(newUser), true, true) {
-        res
+    if (!checkUserValidity(newUser, true, true)) {
+        return res
             .status(StatusCodes.BAD_REQUEST)
             .send("User not valid");
     }
@@ -47,16 +47,16 @@ router.post("/", (req, res) => {
 
 router.put("/:id", (req, res) => {
     let newUser = req.body;
-    if (!checkUserValidity(newUser), true) {
-        res
+    if (!checkUserValidity(newUser, true)) {
+        return res
             .status(StatusCodes.BAD_REQUEST)
             .send("User not valid");
     }
 
     let id = req.params.id;
-    let user = users.find(user => user.id === id);
-    if (user == undefined) {
-        res
+    let user = users.find(user => user.id == id);
+    if (user === undefined) {
+        return res
             .status(StatusCodes.BAD_REQUEST)
             .send("User not found");
     }
@@ -71,20 +71,23 @@ router.put("/:id", (req, res) => {
 router.patch("/:id", (req, res) => {
     let newUser = req.body;
     if (!checkUserValidity(newUser)) {
-        res
+        return res
             .status(StatusCodes.BAD_REQUEST)
             .send("User not valid");
     }
 
     let id = req.params.id;
-    let user = users.find(user => user.id === id);
-    if (user == undefined) {
-        res
+    let user = users.find(user => user.id == id);
+    if (user === undefined) {
+        return res
             .status(StatusCodes.BAD_REQUEST)
             .send("User not found");
     }
 
-    newUser.forEach(key => user[key] = newUser[key]);
+    for (const key of Object.keys(newUser)) {
+        user[key] = newUser[key];
+    }
+
     res
         .status(StatusCodes.OK)
         .send(user);
@@ -94,9 +97,9 @@ router.patch("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
     let id = req.params.id;
 
-    let userIndex = users.findIndex(user => user.id === id);
+    let userIndex = users.findIndex(user => user.id == id);
     if (userIndex == -1) {
-        res
+        return res
             .status(StatusCodes.BAD_REQUEST)
             .send("User not found");
     }
@@ -120,8 +123,7 @@ function checkUserValidity(user, allFields = false, excludeGenerated = false) {
         checkFields[field] = false
     });
 
-    let result = user.forEach(key => {
-        let val = user[key];
+    for (const [key, val] of Object.entries(user)) {
 
         checkFields[key] = true;
 
@@ -145,8 +147,7 @@ function checkUserValidity(user, allFields = false, excludeGenerated = false) {
         }
         else if (key == "password" && (
             typeof val !== "string" ||
-            val.length != 60 ||
-            !val.startsWith("$2a$10$"))) {
+            val.length == 0)) {
             return false;
         }
         else if (key == "secret" && (
@@ -157,13 +158,15 @@ function checkUserValidity(user, allFields = false, excludeGenerated = false) {
         else if (!fields.includes(key)) {
             return false;
         }
-    });
+    }
 
-    if (result == false)
-        return false;
-
-    if (allFields && checkFields.find(field => checkFields[field] == false) != undefined)
-        return false;
+    if (allFields) {
+        for (const val of Object.values(checkFields)) {
+            if (!val) {
+                return false;
+            }
+        }
+    }
 
     return true;
 }
