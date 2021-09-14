@@ -192,7 +192,7 @@ router.put("/", (req, res) => {
             brand: brand,
             capacity: capacity
         };
-        let oldProduct= products.find(element => element.id === id;
+        let oldProduct= products.find(element => element.id === id);
         if (!oldProduct) {
             throw new Error("Incorrect id")
         }
