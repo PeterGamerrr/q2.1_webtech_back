@@ -9,8 +9,9 @@ router.get("/", (req, res) => {
         .send(products);
 });
 
-router.get("/:id", async (req, res) => {
-    let id = req.query.id;
+router.get("/:id", (req, res) => {
+    let id = req.params.id;
+    res.send(products.find(element => element.id == id));
 });
 
 module.exports = router;
