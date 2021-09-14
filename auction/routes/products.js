@@ -47,6 +47,8 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
     let name, startPrice, endDate, region, brand, capacity;
     try {
+
+
         if (
             typeof req.body.name === "string" &&
             req.body.name.length < 128
@@ -101,23 +103,108 @@ router.post("/", (req, res) => {
 
         counter++
         let product = {
-            id: counter,
+            id: id,
             name: name,
             endDate: endDate,
             region: region,
             brand: brand,
             capacity: capacity
         }
-        products.push(product);
+        products.find(product);
         res
             .status(StatusCodes.OK)
-            .json(product)
+            .json(product);
     } catch (e) {
-        res.status(StatusCodes.BAD_REQUEST);
-        res.send(e.toString())
+        res
+            .status(StatusCodes.BAD_REQUEST)
+            .send(e.toString());
     }
 
 
+})
+
+router.put("/", (req, res) => {
+    let id, name, startPrice, endDate, region, brand, capacity;
+    try {
+        if (typeof req.body.id === "number") {
+            id = parseInt(req.body.id);
+        } else {
+            throw new Error("Incorrect id")
+        }
+
+        if (
+            typeof req.body.name === "string" &&
+            req.body.name.length < 128
+        ) {
+            name = req.body.name;
+        } else {
+            throw new Error("Name incorrect!");
+        }
+
+        if (
+            typeof req.body.startPrice === "number" &&
+            req.body.startPrice > 0
+        ) {
+            startPrice = req.body.name;
+        } else {
+            throw new Error("StartPrice incorrect!");
+        }
+
+        if (
+            typeof req.body.endDate === "number" &&
+            req.body.endDate > 0
+        ) {
+            endDate = req.body.endDate;
+        } else {
+            throw new Error("EndDate incorrect!");
+        }
+
+        if (
+            typeof req.body.region === "string"
+        ) {
+            region = req.body.region;
+        } else {
+            throw new Error("Region incorrect!");
+        }
+
+        if (
+            typeof req.body.brand === "string"
+        ) {
+            brand = req.body.brand;
+        } else {
+            throw new Error("Brand incorrect!");
+        }
+
+        if (
+            typeof req.body.capacity === "number" &&
+            parseInt(req.body.capacity) > 0
+        ) {
+            capacity = req.body.ca;
+        } else {
+            throw new Error("Capacity is incorrect")
+        }
+
+        let product = {
+            id: id,
+            name: name,
+            endDate: endDate,
+            region: region,
+            brand: brand,
+            capacity: capacity
+        };
+        let oldProduct= products.find(element => element.id === id;
+        if (!oldProduct) {
+            throw new Error("Incorrect id")
+        }
+        oldProduct = product;
+        res
+            .status(StatusCodes.OK)
+            .json(product);
+    } catch (e) {
+        res
+            .status(StatusCodes.BAD_REQUEST)
+            .send(e.toString());
+    }
 })
 
 module.exports = router;
