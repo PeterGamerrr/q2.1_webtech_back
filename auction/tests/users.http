@@ -1,0 +1,44 @@
+GET http://localhost:3000/api/users
+Accept: application/json
+
+###
+GET http://localhost:3000/api/users/0
+Accept: application/json
+
+###
+POST http://localhost:3000/api/users/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "guus",
+  "email": "guus@email.com",
+  "password": "test"
+}
+
+###
+PUT http://localhost:3000/api/users/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 0
+  "username": "guus",
+  "email": "guus@email.com",
+  "password": "test"
+}
+
+###
+PATCH http://localhost:3000/api/users/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 0
+  "username": "guus",
+  "password": "test"
+}
+
+###
+DELETE http://localhost:3000/api/users/0
+Accept: application/json

@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
 
 router.get("/:id", (req, res) => {
     let id = req.params.id;
-    let user = users.find(user => user.id === id);
+    let user = users.find(user => user.id == id);
     if (user == undefined) {
         res
             .status(StatusCodes.BAD_REQUEST)
