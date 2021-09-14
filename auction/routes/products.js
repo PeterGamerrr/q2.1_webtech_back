@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { StatusCodes } = require("http-status-codes");
-let products = require("../storage/products");
+let { products, counter } = require("../storage/products");
 
 router.get("/", (req, res) => {
     res

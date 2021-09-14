@@ -5,10 +5,12 @@ let auctions = [
         productId: 0
     },
     {
-        id: 0,
+        id: 1,
         title: "Grolsch Stender",
         productId: 1
     }
 ];
 
-module.exports = auctions;
+let counter = auctions.length - 1;
+
+module.exports = { auctions, counter};

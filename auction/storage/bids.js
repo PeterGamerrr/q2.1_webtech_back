@@ -15,4 +15,6 @@ let bids = [
     },
 ];
 
-module.exports = bids;
+let counter = bids.length - 1;
+
+module.exports = { bids, counter};

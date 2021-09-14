@@ -17,4 +17,6 @@ let users = [
     },
 ];
 
-module.exports = users;
+let counter = users.length - 1;
+
+module.exports = { users, counter};

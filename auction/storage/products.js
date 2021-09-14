@@ -19,4 +19,6 @@ let products = [
   },
 ];
 
-module.exports = products;
+let counter = products.length - 1;
+
+module.exports = { products, counter};

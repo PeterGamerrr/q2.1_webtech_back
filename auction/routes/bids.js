@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { StatusCodes } = require("http-status-codes");
-let bids = require("../storage/bids");
+let { bids, counter } = require("../storage/bids");
 
 router.get("/", (req, res) => {
     res

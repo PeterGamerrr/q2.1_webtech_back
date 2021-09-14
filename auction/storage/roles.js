@@ -10,4 +10,6 @@ let roles = [
     },
 ];
 
-module.exports = roles;
+let counter = roles.length - 1;
+
+module.exports = { roles, counter};
