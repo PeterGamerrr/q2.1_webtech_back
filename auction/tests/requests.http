@@ -20,6 +20,19 @@ Accept: application/json
 GET http://localhost:3000/api/products?region=Enschede&brand=Grolsch&capacity=33
 Accept: application/json
 
+### create a new product
+POST http://localhost:3000/api/products
+Content-Type: application/json
+Accept: application/jsons
+
+{
+  "name": "Grolsch Stender Alcoholarm",
+  "startPrice": 42,
+  "endDate": 358103805,
+  "region": "Enschede",
+  "brand": "Grolsch",
+  "capacity": 33
+}
 
 ### create a bid
 POST http://localhost:3000/api/products/0/bids
