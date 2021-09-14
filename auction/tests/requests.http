@@ -17,7 +17,7 @@ Accept: application/json
 
 
 ### filter on multiple types
-GET http://localhost:3000/api/products?region=Enschede&brand=Heineken&capacity=33
+GET http://localhost:3000/api/products?region=Enschede&brand=Grolsch&capacity=33
 Accept: application/json
 
 
