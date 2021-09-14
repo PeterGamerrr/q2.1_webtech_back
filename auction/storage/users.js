@@ -1,5 +1,9 @@
 const {v4:uuidv4} = require("uuid");
 
+let fields = [
+    "id", "username", "email", "password", "secret"
+];
+
 let users = [
     {
         id: 0,
@@ -19,4 +23,4 @@ let users = [
 
 let counter = users.length - 1;
 
-module.exports = { users, counter};
+module.exports = { fields, users, counter};
