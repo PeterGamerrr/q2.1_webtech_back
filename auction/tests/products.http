@@ -4,11 +4,7 @@ Accept: application/json
 
 > {%
 client.test("testing if product 0 works", function() {
-<<<<<<< HEAD
     client.assert(!!response.body && response.status === 200, "product 0 works" )
-=======
-    client.assert(response.status === 200, "product 0 works" )
->>>>>>> 9ba9add2a69d38b5002132df303996780b77d6fe
 });
 %}
 ###
