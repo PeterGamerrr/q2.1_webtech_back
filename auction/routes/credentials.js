@@ -1,6 +1,6 @@
 const express = require("express");
 const { StatusCodes } = require("http-status-codes");
-const users = require("../data/users");
+const { users } = require("../storage/users");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
