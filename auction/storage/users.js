@@ -1,7 +1,9 @@
 const {v4:uuidv4} = require("uuid");
 
 const fields = ["id", "username", "email", "roles", "password", "secret"];
-const pubFields = ["username", "email", "roles"];
+const fieldsToSend = ["id", "username", "email", "roles"];
+const fieldsToQuery = ["username", "email", "roles"];
+const fieldsToValidate = ["username", "email"];
 
 let users = [
     {
@@ -24,4 +26,4 @@ let users = [
 
 let counter = users.length - 1;
 
-module.exports = { fields, pubFields, users, counter};
+module.exports = { fields, fieldsToSend, fieldsToQuery, fieldsToValidate, users, counter};

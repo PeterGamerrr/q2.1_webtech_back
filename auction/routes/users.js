@@ -5,7 +5,7 @@ const {v4:uuidv4} = require("uuid");
 const bcrypt = require("bcrypt");
 const isLoggedIn = require("../middleware/is-logged-in");
 const { hasAdmin } = require("../middleware/has-role");
-let { fields, pubFields, users, counter } = require("../storage/users");
+let { fields, fieldsToValidate, users, counter } = require("../storage/users");
 
 
 router.get("/", isLoggedIn, hasAdmin, (req, res) => {
@@ -99,7 +99,7 @@ router.put("/:id", isLoggedIn, (req, res) => {
             .send("User not found");
     }
 
-    pubFields.forEach(field => {
+    fieldsToValidate.forEach(field => {
         if (newUser[field]) {
             user[field] = newUser[field];
         }
@@ -133,7 +133,7 @@ router.patch("/:id", isLoggedIn, (req, res) => {
             .send("User not found");
     }
 
-    pubFields.forEach(field => {
+    fieldsToValidate.forEach(field => {
         if (newUser[field]) {
             user[field] = newUser[field];
         }
@@ -180,7 +180,7 @@ function validatePassword(password) {
 
 function checkUserValidity(user, allFields = false) {
     let checkFields = {};
-    pubFields.forEach(field => {
+    fieldsToValidate.forEach(field => {
         checkFields[field] = false
     });
 
