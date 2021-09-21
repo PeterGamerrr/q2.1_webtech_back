@@ -187,12 +187,7 @@ function checkUserValidity(user, allFields = false) {
     for (const [key, val] of Object.entries(user)) {
         checkFields[key] = true;
 
-        if (key == "id" && (
-            typeof val !== "number" ||
-            val < 0)) {
-            return false;
-        }
-        else if (key == "username" && (
+        if (key == "username" && (
             typeof val !== "string" ||
             val.length < 3 ||
             val.length > 200)) {
@@ -203,6 +198,12 @@ function checkUserValidity(user, allFields = false) {
             val.length < 3 ||
             val.length > 200 ||
             !val.includes("@"))) {
+            return false;
+        }
+        else if (key == "roles" && (
+            typeof val !== "array" ||
+            val.length == 0 ||
+            val.includes("admin"))) {
             return false;
         }
         else if (!fields.includes(key)) {
