@@ -9,8 +9,10 @@ const hasUser = (req, res, next) => {
 }
 
 const hasRole = (role, req, res, next) => {
-    if (req.user.roles.indexOf(role.toLowerCase()) === -1) {
-        return res.status(StatusCodes.UNAUTHORIZED).send(role + " role needed");
+    if (!req.user.roles.includes(role.toLowerCase())) {
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .send(role + " role needed");
     }
 
     next();

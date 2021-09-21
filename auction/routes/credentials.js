@@ -30,19 +30,27 @@ const login = (username, password) => {
 router.post("", (req, res) => {
     const { username, password } = req.body;
     if (!username) {
-        return res.status(StatusCodes.BAD_REQUEST).send("Username missing in body");
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send("Username missing in body");
     } else if (!password) {
-        return res.status(StatusCodes.BAD_REQUEST).send("Password missing in body");
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send("Password missing in body");
     }
 
     const token = login(username, password);
     if (!token) {
-        return res.status(StatusCodes.UNAUTHORIZED).send("Username or password incorrect");
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .send("Username or password incorrect");
     }
 
-    res.status(StatusCodes.CREATED).send({
-        token: token
-    });
+    res
+        .status(StatusCodes.CREATED)
+        .send({
+            token: token
+        });
 });
 
 module.exports = router;

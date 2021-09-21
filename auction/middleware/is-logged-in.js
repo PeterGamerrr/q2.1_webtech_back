@@ -5,12 +5,16 @@ const jwt = require("jsonwebtoken");
 const isLoggedIn = (req, res, next) => {
     const token = getTokenFromRequest(req);
     if (!token) {
-        return res.status(StatusCodes.UNAUTHORIZED).send("Token missing in authorization header");
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .send("Token missing in authorization header");
     }
 
     const payload = verifyToken(token);
     if (!payload) {
-        return res.status(StatusCodes.UNAUTHORIZED).send("Token invalid");
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .send("Token invalid");
     }
 
     req.user = payload;

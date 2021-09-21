@@ -3,10 +3,12 @@ const router = express.Router();
 const { StatusCodes } = require("http-status-codes");
 const {v4:uuidv4} = require("uuid");
 const bcrypt = require("bcrypt");
+const isLoggedIn = require("../middleware/is-logged-in");
+const { hasAdmin } = require("../middleware/has-role");
 let { fields, pubFields, users, counter } = require("../storage/users");
 
 
-router.get("/", (req, res) => {
+router.get("/", isLoggedIn, hasAdmin, (req, res) => {
     let usersToSend = null;
 
     if (Object.keys(req.query).length === 0) {
@@ -75,7 +77,14 @@ router.post("/", (req, res) => {
 });
 
 
-router.put("/:id", (req, res) => {
+router.put("/:id", isLoggedIn, (req, res) => {
+    let id = req.params.id;
+    if (req.user.id !== id && !req.user.roles.includes("Admin")) {
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .send("Not authorized");
+    }
+
     let newUser = req.body;
     if (!checkUserValidity(newUser, true)) {
         return res
@@ -83,7 +92,6 @@ router.put("/:id", (req, res) => {
             .send("User not valid");
     }
 
-    let id = req.params.id;
     let user = users.find(user => user.id == id);
     if (user === undefined) {
         return res
@@ -91,9 +99,11 @@ router.put("/:id", (req, res) => {
             .send("User not found");
     }
 
-    for (const key of Object.keys(newUser)) {
-        user[key] = newUser[key];
-    }
+    pubFields.forEach(field => {
+        if (newUser[field]) {
+            user[field] = newUser[field];
+        }
+    });
 
     res
         .status(StatusCodes.OK)
@@ -101,7 +111,14 @@ router.put("/:id", (req, res) => {
 });
 
 
-router.patch("/:id", (req, res) => {
+router.patch("/:id", isLoggedIn, (req, res) => {
+    let id = req.params.id;
+    if (req.user.id !== id && !req.user.roles.includes("Admin")) {
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .send("Not authorized");
+    }
+
     let newUser = req.body;
     if (!checkUserValidity(newUser)) {
         return res
@@ -109,17 +126,18 @@ router.patch("/:id", (req, res) => {
             .send("User not valid");
     }
 
-    let id = req.params.id;
-    let user = users.find(user => user.id == id);
+    let user = users.find(user => user.id === id);
     if (user === undefined) {
         return res
             .status(StatusCodes.BAD_REQUEST)
             .send("User not found");
     }
 
-    for (const key of Object.keys(newUser)) {
-        user[key] = newUser[key];
-    }
+    pubFields.forEach(field => {
+        if (newUser[field]) {
+            user[field] = newUser[field];
+        }
+    });
 
     res
         .status(StatusCodes.OK)
@@ -127,8 +145,13 @@ router.patch("/:id", (req, res) => {
 });
 
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", isLoggedIn, (req, res) => {
     let id = req.params.id;
+    if (req.user.id !== id && !req.user.roles.includes("Admin")) {
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .send("Not authorized");
+    }
 
     let userIndex = users.findIndex(user => user.id == id);
     if (userIndex == -1) {
