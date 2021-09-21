@@ -6,9 +6,27 @@ let { fields, users, counter } = require("../storage/users");
 
 
 router.get("/", (req, res) => {
-    res
-        .status(StatusCodes.OK)
-        .send(users);
+    if (Object.keys(req.query).length === 0) {
+        res
+            .status(StatusCodes.OK)
+            .send(users);
+    } else {
+        let filteredUsers = users.filter(user => {
+            let out = true;
+            for (const [key, val] of Object.entries(req.query)) {
+                if (!Object.keys(user).includes(key.toLowerCase())) {
+                    continue;
+                }
+                if (user[key].toLowerCase() !== val.toLowerCase()) {
+                    out = false;
+                }
+            }
+            return out;
+        })
+        res
+            .status(StatusCodes.OK)
+            .send(filteredUsers);
+    }
 });
 
 

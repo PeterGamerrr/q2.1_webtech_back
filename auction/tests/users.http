@@ -8,6 +8,11 @@ Accept: application/json
  %}
 
 ###
+GET http://localhost:3000/api/users?email=gerralt@email.com
+Accept: application/json
+
+
+###
 GET http://localhost:3000/api/users/0
 Accept: application/json
 
