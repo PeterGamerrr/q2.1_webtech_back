@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-const users = require("../storage/users");
+const { users } = require("../storage/users");
 const jwt = require("jsonwebtoken");
 
 const isLoggedIn = (req, res, next) => {
