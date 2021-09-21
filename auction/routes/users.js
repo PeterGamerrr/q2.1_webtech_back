@@ -2,17 +2,19 @@ const express = require("express");
 const router = express.Router();
 const { StatusCodes } = require("http-status-codes");
 const {v4:uuidv4} = require("uuid");
-let { fields, users, counter } = require("../storage/users");
+const bcrypt = require("bcrypt");
+let { fields, pubFields, users, counter } = require("../storage/users");
 
 
 router.get("/", (req, res) => {
+    let usersToSend = null;
+
     if (Object.keys(req.query).length === 0) {
-        res
-            .status(StatusCodes.OK)
-            .send(users);
+        usersToSend = users;
     } else {
-        let filteredUsers = users.filter(user => {
+        usersToSend = users.filter(user => {
             let out = true;
+
             for (const [key, val] of Object.entries(req.query)) {
                 if (!Object.keys(user).includes(key.toLowerCase())) {
                     continue;
@@ -21,12 +23,14 @@ router.get("/", (req, res) => {
                     out = false;
                 }
             }
+
             return out;
         })
-        res
-            .status(StatusCodes.OK)
-            .send(filteredUsers);
     }
+
+    res
+        .status(StatusCodes.OK)
+        .send(usersToSend);
 });
 
 
@@ -47,16 +51,29 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
     let newUser = req.body;
-    if (!checkUserValidity(newUser, true, true)) {
+
+    if (!validatePassword(newUser.password)) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send("User password not secure");
+    }
+
+    if (!checkUserValidity(newUser, true)) {
         return res
             .status(StatusCodes.BAD_REQUEST)
             .send("User not valid");
     }
 
     counter++;
+
     newUser.id = counter;
     newUser.secret = uuidv4();
-    users.push(newUser);
+
+    bcrypt.hash(newUser.password, 10, function(err, hash) {
+        newUser.password = hash;
+        users.push(newUser);
+    });
+
     res
         .status(StatusCodes.CREATED)
         .send(newUser);
@@ -79,7 +96,10 @@ router.put("/:id", (req, res) => {
             .send("User not found");
     }
 
-    user = newUser;
+    for (const key of Object.keys(newUser)) {
+        user[key] = newUser[key];
+    }
+
     res
         .status(StatusCodes.OK)
         .send(user);
@@ -130,19 +150,13 @@ router.delete("/:id", (req, res) => {
 });
 
 
-function checkUserValidity(user, allFields = false, excludeGenerated = false) {
+function checkUserValidity(user, allFields = false) {
     let checkFields = {};
-    fields.forEach(field => {
-        if (excludeGenerated && (
-            field == "id" ||
-            field == "secret"))
-            return;
-
+    pubFields.forEach(field => {
         checkFields[field] = false
     });
 
     for (const [key, val] of Object.entries(user)) {
-
         checkFields[key] = true;
 
         if (key == "id" && (
@@ -163,16 +177,6 @@ function checkUserValidity(user, allFields = false, excludeGenerated = false) {
             !val.includes("@"))) {
             return false;
         }
-        else if (key == "password" && (
-            typeof val !== "string" ||
-            val.length == 0)) {
-            return false;
-        }
-        else if (key == "secret" && (
-            typeof val !== "string" ||
-            val.length != 36)) {
-            return false;
-        }
         else if (!fields.includes(key)) {
             return false;
         }
@@ -187,6 +191,16 @@ function checkUserValidity(user, allFields = false, excludeGenerated = false) {
     }
 
     return true;
+}
+
+function validatePassword(password) {
+    if (typeof password == "string" &&
+        password.length >= 4 &&
+        password.length <= 20) {
+        return true;
+    }
+
+    return false;
 }
 
 module.exports = router;
