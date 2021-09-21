@@ -17,7 +17,7 @@ const isLoggedIn = (req, res, next) => {
             .send("Token invalid");
     }
 
-    req.user = payload;
+    req.user = users.find(user => user.id === payload.id);
     return next();
 }
 

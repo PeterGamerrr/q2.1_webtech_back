@@ -20,6 +20,8 @@ const login = (username, password) => {
 
     return jwt.sign(
         {
+            email: user.email,
+            id: user.id,
             username: user.username,
             roles: user.roles
         },
