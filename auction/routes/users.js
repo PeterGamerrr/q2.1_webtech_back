@@ -13,18 +13,13 @@ router.get("/", (req, res) => {
         usersToSend = users;
     } else {
         usersToSend = users.filter(user => {
-            let out = true;
-
             for (const [key, val] of Object.entries(req.query)) {
-                if (!Object.keys(user).includes(key.toLowerCase())) {
-                    continue;
-                }
-                if (user[key].toLowerCase() !== val.toLowerCase()) {
-                    out = false;
+                if (user[key] && user[key].toLowerCase() !== val.toLowerCase()) {
+                    return false;
                 }
             }
 
-            return out;
+            return true;
         })
     }
 
@@ -150,6 +145,16 @@ router.delete("/:id", (req, res) => {
 });
 
 
+function validatePassword(password) {
+    if (typeof password == "string" &&
+        password.length >= 4 &&
+        password.length <= 20) {
+        return true;
+    }
+
+    return false;
+}
+
 function checkUserValidity(user, allFields = false) {
     let checkFields = {};
     pubFields.forEach(field => {
@@ -191,16 +196,6 @@ function checkUserValidity(user, allFields = false) {
     }
 
     return true;
-}
-
-function validatePassword(password) {
-    if (typeof password == "string" &&
-        password.length >= 4 &&
-        password.length <= 20) {
-        return true;
-    }
-
-    return false;
 }
 
 module.exports = router;
