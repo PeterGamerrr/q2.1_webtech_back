@@ -1,4 +1,5 @@
 GET http://localhost:3000/api/users
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzIyOTc5OTd9.pWPa9bSpNlW4U4o8tQNpoOey3_F61zKa6CSt9jjJv_U
 Accept: application/json
 
 > {%
