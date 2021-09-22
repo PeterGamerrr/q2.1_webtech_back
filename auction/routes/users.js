@@ -178,6 +178,19 @@ function validatePassword(password) {
     return false;
 }
 
+function sanitizeUser(user) {
+    return {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        roles: user.roles
+    }
+}
+
+function sanitizeUserArray(users) {
+    return users.map(sanitizeUser)
+}
+
 function checkUserValidity(user, allFields = false) {
     let checkFields = {};
     fieldsToValidate.forEach(field => {
