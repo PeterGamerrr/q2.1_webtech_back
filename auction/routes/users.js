@@ -12,9 +12,9 @@ router.get("/", isLoggedIn, hasAdmin, (req, res) => {
     let usersToSend = null;
 
     if (Object.keys(req.query).length === 0) {
-        usersToSend = users;
+        usersToSend = sanitizeUserArray(users);
     } else {
-        usersToSend = users.filter(user => {
+        usersToSend = sanitizeUserArray(users).filter(user => {
             for (const [key, val] of Object.entries(req.query)) {
                 if (user[key] && user[key].toLowerCase() !== val.toLowerCase()) {
                     return false;
@@ -42,7 +42,7 @@ router.get("/:id", (req, res) => {
 
     res
         .status(StatusCodes.OK)
-        .send(user);
+        .send(sanitizeUser(user));
 });
 
 
@@ -65,6 +65,7 @@ router.post("/", (req, res) => {
 
     newUser.id = counter;
     newUser.secret = uuidv4();
+    newUser.roles = ["user"]
 
     bcrypt.hash(newUser.password, 10, function(err, hash) {
         newUser.password = hash;
@@ -73,13 +74,13 @@ router.post("/", (req, res) => {
 
     res
         .status(StatusCodes.CREATED)
-        .send(newUser);
+        .send(sanitizeUser(newUser));
 });
 
 
 router.put("/:id", isLoggedIn, (req, res) => {
     let id = req.params.id;
-    if (req.user.id !== id && !req.user.roles.includes("Admin")) {
+    if (req.user.id !== id && !req.user.roles.includes("admin")) {
         return res
             .status(StatusCodes.UNAUTHORIZED)
             .send("Not authorized");
@@ -107,13 +108,13 @@ router.put("/:id", isLoggedIn, (req, res) => {
 
     res
         .status(StatusCodes.OK)
-        .send(user);
+        .send(sanitizeUser(user));
 });
 
 
 router.patch("/:id", isLoggedIn, (req, res) => {
     let id = req.params.id;
-    if (req.user.id !== id && !req.user.roles.includes("Admin")) {
+    if (req.user.id !== id && !req.user.roles.includes("admin")) {
         return res
             .status(StatusCodes.UNAUTHORIZED)
             .send("Not authorized");
@@ -126,7 +127,7 @@ router.patch("/:id", isLoggedIn, (req, res) => {
             .send("User not valid");
     }
 
-    let user = users.find(user => user.id === id);
+    let user = users.find(user => user.id == id);
     if (user === undefined) {
         return res
             .status(StatusCodes.BAD_REQUEST)
@@ -141,19 +142,20 @@ router.patch("/:id", isLoggedIn, (req, res) => {
 
     res
         .status(StatusCodes.OK)
-        .send(user);
+        .send(sanitizeUser(user));
 });
 
 
 router.delete("/:id", isLoggedIn, (req, res) => {
     let id = req.params.id;
-    if (req.user.id !== id && !req.user.roles.includes("Admin")) {
+    if (req.user.id !== id && !req.user.roles.includes("admin")) {
         return res
             .status(StatusCodes.UNAUTHORIZED)
             .send("Not authorized");
     }
 
     let userIndex = users.findIndex(user => user.id == id);
+    let user = users[userIndex]
     if (userIndex == -1) {
         return res
             .status(StatusCodes.BAD_REQUEST)
@@ -163,8 +165,8 @@ router.delete("/:id", isLoggedIn, (req, res) => {
     users.splice(userIndex, 1);
 
     res
-        .status(StatusCodes.NO_CONTENT)
-        .send();
+        .status(StatusCodes.OK)
+        .send(sanitizeUser(user));
 });
 
 

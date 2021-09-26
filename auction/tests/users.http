@@ -1,5 +1,5 @@
 GET http://localhost:3000/api/users
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzIyOTkzODR9.FXxA7mrGe1NA8djUky9m3oyp5bu3yKWyXaC6c6Jhy94
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 Accept: application/json
 
 > {%
@@ -10,6 +10,7 @@ Accept: application/json
 
 ###
 GET http://localhost:3000/api/users?email=gerralt@email.com
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 Accept: application/json
 
 
@@ -32,6 +33,7 @@ Accept: application/json
 PUT http://localhost:3000/api/users/0
 Content-Type: application/json
 Accept: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 
 {
   "id": 0,
@@ -44,11 +46,13 @@ Accept: application/json
 PATCH http://localhost:3000/api/users/0
 Content-Type: application/json
 Accept: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 
 {
   "username": "geraldt"
 }
 
 ###
-DELETE http://localhost:3000/api/users/0
+DELETE http://localhost:3000/api/users/1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 Accept: application/json

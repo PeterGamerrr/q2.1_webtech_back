@@ -36,7 +36,7 @@ const verifyToken = (token) => {
         return false;
     }
 
-    const user = users.find(user => user.username == payload.username);
+    const user = users.find(user => user.id == payload.id);
     if (!user) {
         return false;
     }
