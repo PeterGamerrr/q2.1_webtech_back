@@ -101,7 +101,7 @@ router.put("/:id", isLoggedIn, (req, res) => {
     }
 
     fieldsToValidate.forEach(field => {
-        if (newUser[field]) {
+        if (newUser[field] !== undefined) {
             user[field] = newUser[field];
         }
     });
@@ -135,7 +135,7 @@ router.patch("/:id", isLoggedIn, (req, res) => {
     }
 
     fieldsToValidate.forEach(field => {
-        if (newUser[field]) {
+        if (newUser[field] !== undefined) {
             user[field] = newUser[field];
         }
     });
