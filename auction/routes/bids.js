@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
     } else {
         bidsToSend = bids.filter(bid => {
             for (const [key, val] of Object.entries(req.query)) {
-                if (bid[key] && bid[key].toLowerCase() !== val.toLowerCase()) {
+                if (bid[key] !== undefined && bid[key].toString().toLowerCase() !== val.toLowerCase()) {
                     return false;
                 }
             }
@@ -60,7 +60,7 @@ router.post("/", isLoggedIn ,(req, res) => {
     newBid.userId = req.user.id;
     newBid.hasWon = false;
     newBid.date = Date.now();
-
+    bids.push(newBid);
 
     res
         .status(StatusCodes.CREATED)

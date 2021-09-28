@@ -12,8 +12,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/",                require("./routes/index"));
 app.use("/api/credentials", require('./routes/credentials'));
 app.use("/api/users",       require("./routes/users"));
-app.use("/api/bids",        require("./routes/auctions"));
-app.use("/api/auctions",    require("./routes/bids"));
+app.use("/api/bids",        require("./routes/bids"));
+app.use("/api/auctions",    require("./routes/auctions"));
 app.use("/api/products",    require("./routes/products"));
 
 module.exports = app;
