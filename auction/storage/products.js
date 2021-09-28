@@ -7,14 +7,14 @@ let products = [
         name: "Heineken Oud Bruin",
         brand: "Heineken",
         region: "Amsterdam",
-        capacity: 33,
+        capacity: 330,
     },
     {
         id: 1,
         name: "Grolsch Stender Alcoholarm",
         brand: "Grolsch",
         region: "Enschede",
-        capacity: 33,
+        capacity: 330,
     },
 ];
 
