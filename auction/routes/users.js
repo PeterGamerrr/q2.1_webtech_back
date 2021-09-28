@@ -16,7 +16,7 @@ router.get("/", isLoggedIn, hasAdmin, (req, res) => {
     } else {
         usersToSend = sanitizeUserArray(users).filter(user => {
             for (const [key, val] of Object.entries(req.query)) {
-                if (user[key] && user[key].toLowerCase() !== val.toLowerCase()) {
+                if (user[key] !== undefined && user[key].toLowerCase() !== val.toLowerCase()) {
                     return false;
                 }
             }
