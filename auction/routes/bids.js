@@ -1,14 +1,32 @@
 const express = require("express");
 const router = express.Router();
 const { StatusCodes } = require("http-status-codes");
-const {v4:uuidv4} = require("uuid");
-let { bids, counter } = require("../storage/users");
+const isLoggedIn = require("../middleware/is-logged-in");
+const { hasAdmin } = require("../middleware/has-role");
+let { fields, bids, counter, fieldsToValidate} = require("../storage/bids");
+const {auctions} = require("../storage/auctions");
 
 
 router.get("/", (req, res) => {
+    let bidsToSend = null;
+
+    if (Object.keys(req.query).length === 0) {
+        bidsToSend = bids;
+    } else {
+        bidsToSend = bids.filter(bid => {
+            for (const [key, val] of Object.entries(req.query)) {
+                if (bid[key] && bid[key].toLowerCase() !== val.toLowerCase()) {
+                    return false;
+                }
+            }
+
+            return true;
+        })
+    }
+
     res
         .status(StatusCodes.OK)
-        .send(bids);
+        .send(bidsToSend);
 });
 
 
@@ -27,135 +45,73 @@ router.get("/:id", (req, res) => {
 });
 
 
-router.post("/", (req, res) => {
+router.post("/", isLoggedIn ,(req, res) => {
     let newBid = req.body;
-    if (!checkBidValidity(newBid, true, true)) {
+
+    if (!checkBidValidity(newBid, true)) {
         return res
             .status(StatusCodes.BAD_REQUEST)
             .send("Bid not valid");
     }
 
     counter++;
+
     newBid.id = counter;
-    newBid.date = Math.round(Date.now() / 1000);
-    new
-    users.push(newUser);
+    newBid.userId = req.user.id;
+    newBid.hasWon = false;
+    newBid.date = Date.now();
+
+
     res
         .status(StatusCodes.CREATED)
-        .send(newUser);
+        .send(newBid);
 });
 
-
-router.put("/:id", (req, res) => {
-    let newUser = req.body;
-    if (!checkUserValidity(newUser, true)) {
-        return res
-            .status(StatusCodes.BAD_REQUEST)
-            .send("User not valid");
-    }
-
+router.delete("/:id", isLoggedIn, (req, res) => {
     let id = req.params.id;
-    let user = users.find(user => user.id == id);
-    if (user === undefined) {
+    if (req.user.id !== id && !req.user.roles.includes("admin")) {
         return res
-            .status(StatusCodes.BAD_REQUEST)
-            .send("User not found");
+            .status(StatusCodes.UNAUTHORIZED)
+            .send("Not authorized");
     }
-
-    user = newUser;
-    res
-        .status(StatusCodes.OK)
-        .send(user);
-});
-
-
-router.patch("/:id", (req, res) => {
-    let newUser = req.body;
-    if (!checkUserValidity(newUser)) {
-        return res
-            .status(StatusCodes.BAD_REQUEST)
-            .send("User not valid");
-    }
-
-    let id = req.params.id;
-    let user = users.find(user => user.id == id);
-    if (user === undefined) {
-        return res
-            .status(StatusCodes.BAD_REQUEST)
-            .send("User not found");
-    }
-
-    for (const key of Object.keys(newUser)) {
-        user[key] = newUser[key];
-    }
-
-    res
-        .status(StatusCodes.OK)
-        .send(user);
-});
-
-
-router.delete("/:id", (req, res) => {
-    let id = req.params.id;
 
     let bidIndex = bids.findIndex(bid => bid.id == id);
-    if (bidIndex === -1) {
+    if (bidIndex == -1) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("User not found");
+            .send("Bid not found");
     }
+    let bid = bids[bidIndex];
 
     bids.splice(bidIndex, 1);
 
     res
-        .status(StatusCodes.NO_CONTENT)
-        .send();
+        .status(StatusCodes.OK)
+        .send(bid);
 });
 
-//TODO: change this out for bids
-function checkBidValidity(bid, allFields = false, excludeGenerated = false) {
-    let checkFields = {};
-    fields.forEach(field => {
-        if (excludeGenerated && (
-            field == "id" ||
-            field == "secret"))
-            return;
 
+function checkBidValidity(bid, allFields = false) {
+    let checkFields = {};
+    fieldsToValidate.forEach(field => {
         checkFields[field] = false
     });
 
     for (const [key, val] of Object.entries(bid)) {
-
         checkFields[key] = true;
 
-        if (key == "id" && (
+        if (key == "price" && (
             typeof val !== "number" ||
             val < 0)) {
             return false;
         }
-        else if (key == "username" && (
-            typeof val !== "string" ||
-            val.length < 3 ||
-            val.length > 200)) {
+        else if (key == "auctionId" && (
+            typeof val !== "number" ||
+            val < 0 ||
+            auctions.findIndex(auction => auction.id == val) === -1 )) {
             return false;
         }
-        else if (key == "email" && (
-            typeof val !== "string" ||
-            val.length < 3 ||
-            val.length > 200 ||
-            !val.includes("@"))) {
-            return false;
-        }
-        else if (key == "password" && (
-            typeof val !== "string" ||
-            val.length == 0)) {
-            return false;
-        }
-        else if (key == "secret" && (
-            typeof val !== "string" ||
-            val.length != 36)) {
-            return false;
-        }
+
         else if (!fields.includes(key)) {
             return false;
         }

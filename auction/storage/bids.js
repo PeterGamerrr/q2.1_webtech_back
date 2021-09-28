@@ -1,7 +1,9 @@
 
-let fields = [
+const fields = [
     "id", "price", "hasWon", "userId", "auctionId", "date"
 ];
+const fieldsToValidate = ["price", "auctionId"];
+
 
 let bids = [
     {
@@ -24,4 +26,4 @@ let bids = [
 
 let counter = bids.length - 1;
 
-module.exports = { bids, counter};
+module.exports = { bids, counter, fields, fieldsToValidate};
