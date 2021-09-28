@@ -1,3 +1,5 @@
+const fields = ["id", "name"];
+
 let roles = [
     {
         id: 0,
@@ -12,4 +14,4 @@ let roles = [
 
 let counter = roles.length - 1;
 
-module.exports = { roles, counter};
+module.exports = { fields, roles, counter };

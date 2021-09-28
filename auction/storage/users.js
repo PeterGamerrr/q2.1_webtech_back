@@ -26,4 +26,4 @@ let users = [
 
 let counter = users.length - 1;
 
-module.exports = { fields, fieldsToSend, fieldsToQuery, fieldsToValidate, users, counter};
+module.exports = { fields, fieldsToSend, fieldsToQuery, fieldsToValidate, users, counter };

@@ -1,3 +1,6 @@
+const fields = ["id", "title", "endDate", "productId"];
+const fieldsToValidate = ["title", "endDate", "productId"];
+
 let auctions = [
     {
         id: 0,
@@ -13,11 +16,6 @@ let auctions = [
     }
 ];
 
-const fieldsToValidate = ["title", "productId", "endDate"];
-
-const fields = ["id", "title","productId", "endDate"];
-
-
 let counter = auctions.length - 1;
 
-module.exports = { auctions, counter,fields ,fieldsToValidate};
+module.exports = { fields ,fieldsToValidate, auctions, counter };
