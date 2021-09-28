@@ -1,210 +1,201 @@
-// noinspection ExceptionCaughtLocallyJS
-
 const express = require("express");
 const router = express.Router();
-const {StatusCodes} = require("http-status-codes");
-let {products, counter} = require("../storage/products");
+const { StatusCodes } = require("http-status-codes");
+const isLoggedIn = require("../middleware/is-logged-in");
+const { hasAdmin } = require("../middleware/has-role");
+let { products, counter,fields ,fieldsToValidate } = require("../storage/products");
+
 
 router.get("/", (req, res) => {
+    let productsToSend = null;
+
     if (Object.keys(req.query).length === 0) {
-        res
-            .status(StatusCodes.OK)
-            .send(products);
+        productsToSend = products;
     } else {
-        let region = req.query.region.toLowerCase();
-        let brand = req.query.brand.toLowerCase();
-        let capacity = parseInt(req.query.capacity);
-        console.log({region, brand, capacity});
-        let filteredProducts = products.filter(element => {
-            let out = true;
-            if (region !== undefined && element.region.toLowerCase() !== region) {
-                out = false;
-                console.log({"wrong region ": element.region.toLowerCase()});
+        productsToSend = products.filter(product => {
+            for (const [key, val] of Object.entries(req.query)) {
+                if (product[key] !== undefined && product[key].toString().toLowerCase() !== val.toLowerCase()) {
+                    return false;
+                }
             }
-            if (brand !== undefined && element.brand.toLowerCase() !== brand) {
-                out = false;
-                console.log({"wrong brand ": element.brand.toLowerCase()})
-            }
-            if (capacity !== undefined && element.capacity() !== capacity) {
-                out = false;
-                console.log({"wrong capacity ": element.capacity})
-            }
-            return out;
+
+            return true;
         })
-        res
-            .status(StatusCodes.OK)
-            .send(filteredProducts);
     }
+
+    res
+        .status(StatusCodes.OK)
+        .send(productsToSend);
 });
+
 
 router.get("/:id", (req, res) => {
     let id = req.params.id;
+    let product = products.find(product => product.id == id);
+    if (product === undefined) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send("Product not found");
+    }
+
     res
         .status(StatusCodes.OK)
-        .send(products.find(element => element.id == id));
+        .send(product);
 });
 
+
 router.post("/", (req, res) => {
-    let name, startPrice, endDate, region, brand, capacity;
-    try {
+    let newProduct = req.body;
 
 
-        if (
-            typeof req.body.name === "string" &&
-            req.body.name.length < 128
-        ) {
-            name = req.body.name;
-        } else {
-            throw new Error("Name incorrect!");
-        }
-
-        if (
-            typeof req.body.startPrice === "number" &&
-            req.body.startPrice > 0
-        ) {
-            startPrice = req.body.name;
-        } else {
-            throw new Error("StartPrice incorrect!");
-        }
-
-        if (
-            typeof req.body.endDate === "number" &&
-            req.body.endDate > 0
-        ) {
-            endDate = req.body.endDate;
-        } else {
-            throw new Error("EndDate incorrect!");
-        }
-
-        if (
-            typeof req.body.region === "string"
-        ) {
-            region = req.body.region;
-        } else {
-            throw new Error("Region incorrect!");
-        }
-
-        if (
-            typeof req.body.brand === "string"
-        ) {
-            brand = req.body.brand;
-        } else {
-            throw new Error("Brand incorrect!");
-        }
-
-        if (
-            typeof req.body.capacity === "number" &&
-            parseInt(req.body.capacity) > 0
-        ) {
-            capacity = req.body.ca;
-        } else {
-            throw new Error("Capacity is incorrect")
-        }
-
-        counter++
-        let product = {
-            id: id,
-            name: name,
-            endDate: endDate,
-            region: region,
-            brand: brand,
-            capacity: capacity
-        }
-        products.find(product);
-        res
-            .status(StatusCodes.OK)
-            .json(product);
-    } catch (e) {
-        res
+    if (!checkUserValidity(newProduct, true)) {
+        return res
             .status(StatusCodes.BAD_REQUEST)
-            .send(e.toString());
+            .send("Product not valid");
     }
 
+    counter++;
+    newProduct.id = counter;
 
-})
+    products.push(newProduct);
+    res
+        .status(StatusCodes.CREATED)
+        .send(newProduct);
+});
 
-router.put("/", (req, res) => {
-    let id, name, startPrice, endDate, region, brand, capacity;
-    try {
-        if (typeof req.body.id === "number") {
-            id = parseInt(req.body.id);
-        } else {
-            throw new Error("Incorrect id")
-        }
 
-        if (
-            typeof req.body.name === "string" &&
-            req.body.name.length < 128
-        ) {
-            name = req.body.name;
-        } else {
-            throw new Error("Name incorrect!");
-        }
+router.put("/:id", isLoggedIn, hasAdmin, (req, res) => {
+    let id = req.params.id;
 
-        if (
-            typeof req.body.startPrice === "number" &&
-            req.body.startPrice > 0
-        ) {
-            startPrice = req.body.name;
-        } else {
-            throw new Error("StartPrice incorrect!");
-        }
-
-        if (
-            typeof req.body.endDate === "number" &&
-            req.body.endDate > 0
-        ) {
-            endDate = req.body.endDate;
-        } else {
-            throw new Error("EndDate incorrect!");
-        }
-
-        if (
-            typeof req.body.region === "string"
-        ) {
-            region = req.body.region;
-        } else {
-            throw new Error("Region incorrect!");
-        }
-
-        if (
-            typeof req.body.brand === "string"
-        ) {
-            brand = req.body.brand;
-        } else {
-            throw new Error("Brand incorrect!");
-        }
-
-        if (
-            typeof req.body.capacity === "number" &&
-            parseInt(req.body.capacity) > 0
-        ) {
-            capacity = req.body.ca;
-        } else {
-            throw new Error("Capacity is incorrect")
-        }
-
-        let product = {
-            id: id,
-            name: name,
-            endDate: endDate,
-            region: region,
-            brand: brand,
-            capacity: capacity
-        };
-        let oldProduct= products.find(element => element.id === id);
-        if (!oldProduct) {
-            throw new Error("Incorrect id")
-        }
-        oldProduct = product;
-        res
-            .status(StatusCodes.OK)
-            .json(product);
-    } catch (e) {
-        res
+    let newProduct = req.body;
+    if (!checkUserValidity(newProduct, true)) {
+        return res
             .status(StatusCodes.BAD_REQUEST)
-            .send(e.toString());
+            .send("Product not valid");
     }
-})
+
+    let product = products.find(product => product.id == id);
+    if (product === undefined) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send("Product not found");
+    }
+
+    fieldsToValidate.forEach(field => {
+        if (newProduct[field] !== undefined) {
+            product[field] = newProduct[field];
+        }
+    });
+
+    res
+        .status(StatusCodes.OK)
+        .send(product);
+});
+
+
+router.patch("/:id", isLoggedIn, hasAdmin, (req, res) => {
+    let id = req.params.id;
+
+    let newProduct = req.body;
+    if (!checkUserValidity(newProduct)) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send("Product not valid");
+    }
+
+    let product = products.find(product => product.id == id);
+    if (product === undefined) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send("Product not found");
+    }
+
+    fieldsToValidate.forEach(field => {
+        if (newProduct[field] !== undefined) {
+            product[field] = newProduct[field];
+        }
+    });
+
+    res
+        .status(StatusCodes.OK)
+        .send(product);
+});
+
+
+router.delete("/:id", isLoggedIn, hasAdmin, (req, res) => {
+    let id = req.params.id;
+
+    let productIndex = products.findIndex(product => product.id == id);
+    if (productIndex == -1) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send("Product not found");
+    }
+    let product = products[productIndex]
+
+
+    products.splice(productIndex, 1);
+
+    res
+        .status(StatusCodes.OK)
+        .send(product);
+});
+
+
+function checkUserValidity(product, allFields = false) {
+    let checkFields = {};
+    fieldsToValidate.forEach(field => {
+        checkFields[field] = false
+    });
+
+    for (const [key, val] of Object.entries(product)) {
+        checkFields[key] = true;
+
+        if (key == "name" && (
+            typeof val !== "string" ||
+            val.length < 3 ||
+            val.length > 128)) {
+            return false;
+        }
+        else if (key == "startPrice" && (
+            typeof val !== "number" ||
+            val < 0 )){
+            return false;
+        }
+        else if (key == "endDate" && (
+            typeof val !== "number" ||
+            val < Date.now() - 30000)) {
+            return false;
+        } else if (key == "region" && (
+            typeof val !== "string" ||
+            val.length <= 0 ||
+            val.length > 128)) {
+            return false;
+        } else if (key == "brand" && (
+            typeof val !== "string" ||
+            val.length <= 0 ||
+            val.length > 128)) {
+            return false;
+        } else if (key == "capacity" && (
+            typeof val !== "number" ||
+            val <= 0)) {
+            return false;
+        }
+
+        else if (!fields.includes(key)) {
+            return false;
+        }
+    }
+
+    if (allFields) {
+        for (const val of Object.values(checkFields)) {
+            if (!val) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
 
 module.exports = router;

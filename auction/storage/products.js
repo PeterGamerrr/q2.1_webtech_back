@@ -19,6 +19,10 @@ let products = [
   },
 ];
 
+const fieldsToValidate = ["name", "startPrice", "endDate", "region", "brand", "capacity"];
+
+const fields = ["id", "name", "startPrice", "endDate", "region", "brand", "capacity"]
+
 let counter = products.length - 1;
 
-module.exports = { products, counter};
+module.exports = { products, counter,fields ,fieldsToValidate };
