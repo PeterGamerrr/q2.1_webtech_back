@@ -1,4 +1,4 @@
-const fields = ["id", "price", "hasWon", "userId", "auctionId", "date"];
+const fields = ["id", "price", "hasWon", "date", "userId", "auctionId"];
 const fieldsToValidate = ["price", "auctionId"];
 
 let bids = [
@@ -6,17 +6,17 @@ let bids = [
         id: 0,
         price: 30.2,
         hasWon: false,
+        date: new Date(2000, 0).getTime(),
         userId: 0,
         auctionId: 0,
-        date: 1632205182,
     },
     {
         id: 1,
         price: 25.6,
         hasWon: true,
+        date: new Date(2001, 0).getTime(),
         userId: 1,
         auctionId: 1,
-        date: 1632205182,
     },
 ];
 
