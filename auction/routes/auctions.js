@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
     } else {
         auctionsToSend = auctions.filter(auction => {
             for (const [key, val] of Object.entries(req.query)) {
-                if (auction[key] !== undefined && auction[key].toLowerCase() !== val.toLowerCase()) {
+                if (auction[key] !== undefined && auction[key].toString().toLowerCase() !== val.toLowerCase()) {
                     return false;
                 }
             }
@@ -98,7 +98,7 @@ router.patch("/:id", isLoggedIn, hasAdmin, (req, res) => {
     let id = req.params.id;
 
     let newAuction = req.body;
-    if (!checkAuctionValidity(auction)) {
+    if (!checkAuctionValidity(newAuction)) {
         return res
             .status(StatusCodes.BAD_REQUEST)
             .send("Auction not valid");

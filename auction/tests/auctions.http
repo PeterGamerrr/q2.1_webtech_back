@@ -1,0 +1,65 @@
+GET http://localhost:3000/api/auctions
+Accept: application/json
+
+
+###
+POST http://localhost:3000/api/auctions
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Content-Type: application/json
+
+{
+  "title": "Heineken Oud Bruin",
+  "endDate": 1632919941506,
+  "productId": 0
+}
+
+###
+GET http://localhost:3000/api/auctions
+Accept: application/json
+
+###
+GET http://localhost:3000/api/auctions?id=0
+Accept: application/json
+
+###
+GET http://localhost:3000/api/auctions/0
+Accept: application/json
+
+###
+PUT http://localhost:3000/api/auctions/0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Heineken Super Oud Bruin",
+  "endDate": 1632919941506,
+  "productId": 0
+}
+
+###
+GET http://localhost:3000/api/auctions/0
+Accept: application/json
+
+###
+PATCH http://localhost:3000/api/auctions/0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Heineken extra Oud Bruin"
+}
+
+###
+GET http://localhost:3000/api/auctions/0
+Accept: application/json
+
+
+###
+DELETE http://localhost:3000/api/auctions/2
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+
+###
+GET http://localhost:3000/api/auctions
