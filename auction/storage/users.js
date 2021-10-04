@@ -12,7 +12,7 @@ let users = [
         email: "gerralt@email.com",
         password: "$2a$10$N4Do4jE7/DGpGCPkP2avsekQxd1pYKLvqedIBce/trNpL4hB8MMK.", // gerralt123
         secret: "GERRALT", //uuidv4()
-        roleIds: [0, 1]
+        roleIds: ["user", "Admin"]
     },
     {
         id: 1,
@@ -20,7 +20,7 @@ let users = [
         email: "guus@email.com",
         password: "$2a$10$608npxoLos.NngQkJUvU8e/7hgHTUNqGOLDgy/ZOh5CkWgL0ZuODq", // guus123
         secret: "GUUS", //uuidv4()
-        roleIds: [0]
+        roleIds: ["user"]
     },
 ];
 

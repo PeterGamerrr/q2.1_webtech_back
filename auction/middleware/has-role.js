@@ -1,15 +1,26 @@
 const { StatusCodes } = require("http-status-codes");
 
 const hasAdmin = (req, res, next) => {
-    hasRole("Admin", req, res, next);
+    hasRole("admin", req, res, next);
 }
 
 const hasUser = (req, res, next) => {
-    hasRole("User", req, res, next);
+    hasRole("user", req, res, next);
+}
+
+const isSelfOrAdmin = (req, res, next) => {
+    let id = req.params.id;
+    if (req.user.id !== id && !req.user.roles.includes("admin")) {
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .send("Not authorized");
+    }
+
+    next();
 }
 
 const hasRole = (role, req, res, next) => {
-    if (!req.user.roles.includes(role.toLowerCase())) {
+    if (!req.user.roles.includes(role)) {
         return res
             .status(StatusCodes.UNAUTHORIZED)
             .send(role + " role needed");
@@ -20,5 +31,6 @@ const hasRole = (role, req, res, next) => {
 
 module.exports = {
     hasAdmin,
-    hasUser
+    hasUser,
+    isSelfOrAdmin
 };

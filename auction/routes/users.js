@@ -4,7 +4,7 @@ const { StatusCodes } = require("http-status-codes");
 const {v4:uuidv4} = require("uuid");
 const bcrypt = require("bcrypt");
 const isLoggedIn = require("../middleware/is-logged-in");
-const { hasAdmin } = require("../middleware/has-role");
+const { isSelfOrAdmin, hasAdmin } = require("../middleware/has-role");
 let { fields, fieldsToValidate, users, counter } = require("../storage/users");
 
 
@@ -78,14 +78,7 @@ router.post("/", (req, res) => {
 });
 
 
-router.put("/:id", isLoggedIn, (req, res) => {
-    let id = req.params.id;
-    if (req.user.id !== id && !req.user.roles.includes("admin")) {
-        return res
-            .status(StatusCodes.UNAUTHORIZED)
-            .send("Not authorized");
-    }
-
+router.put("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
     let newUser = req.body;
     if (!checkUserValidity(newUser, true)) {
         return res
@@ -112,14 +105,7 @@ router.put("/:id", isLoggedIn, (req, res) => {
 });
 
 
-router.patch("/:id", isLoggedIn, (req, res) => {
-    let id = req.params.id;
-    if (req.user.id !== id && !req.user.roles.includes("admin")) {
-        return res
-            .status(StatusCodes.UNAUTHORIZED)
-            .send("Not authorized");
-    }
-
+router.patch("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
     let newUser = req.body;
     if (!checkUserValidity(newUser)) {
         return res
@@ -146,14 +132,7 @@ router.patch("/:id", isLoggedIn, (req, res) => {
 });
 
 
-router.delete("/:id", isLoggedIn, (req, res) => {
-    let id = req.params.id;
-    if (req.user.id !== id && !req.user.roles.includes("admin")) {
-        return res
-            .status(StatusCodes.UNAUTHORIZED)
-            .send("Not authorized");
-    }
-
+router.delete("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
     let userIndex = users.findIndex(user => user.id == id);
     let user = users[userIndex]
     if (userIndex == -1) {
