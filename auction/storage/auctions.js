@@ -17,6 +17,46 @@ let auctions = [
         startDate: new Date(2005, 0).getTime(),
         endDate: new Date(2007, 0).getTime(),
         productId: 1
+    },
+    {
+        id: 2,
+        startPrice: 23,
+        price: 25.6,
+        startDate: new Date(2005, 0).getTime(),
+        endDate: new Date(2007, 0).getTime(),
+        productId: 1
+    },
+    {
+        id: 3,
+        startPrice: 23,
+        price: 25.6,
+        startDate: new Date(2005, 0).getTime(),
+        endDate: new Date(2007, 0).getTime(),
+        productId: 1
+    },
+    {
+        id: 4,
+        startPrice: 23,
+        price: 25.6,
+        startDate: new Date(2005, 0).getTime(),
+        endDate: new Date(2007, 0).getTime(),
+        productId: 1
+    },
+    {
+        id: 5,
+        startPrice: 23,
+        price: 25.6,
+        startDate: new Date(2005, 0).getTime(),
+        endDate: new Date(2007, 0).getTime(),
+        productId: 1
+    },
+    {
+        id: 6,
+        startPrice: 23,
+        price: 25.6,
+        startDate: new Date(2005, 0).getTime(),
+        endDate: new Date(2007, 0).getTime(),
+        productId: 1
     }
 ];
 
