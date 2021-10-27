@@ -1,8 +1,8 @@
 const {v4:uuidv4} = require("uuid");
 
-const fields = ["id", "username", "email", "password", "secret", "roleIds"];
-const fieldsToSend = ["id", "username", "email", "roleIds"];
-const fieldsToQuery = ["username", "email", "roleIds"];
+const fields = ["id", "username", "email", "password", "secret", "roles"];
+const fieldsToSend = ["id", "username", "email", "roles"];
+const fieldsToQuery = ["username", "email", "roles"];
 const fieldsToValidate = ["username", "email"];
 
 let users = [
@@ -12,7 +12,7 @@ let users = [
         email: "gerralt@email.com",
         password: "$2a$10$N4Do4jE7/DGpGCPkP2avsekQxd1pYKLvqedIBce/trNpL4hB8MMK.", // gerralt123
         secret: "GERRALT", //uuidv4()
-        roleIds: ["user", "admin"]
+        roles: ["user", "admin"]
     },
     {
         id: 1,
@@ -20,7 +20,7 @@ let users = [
         email: "guus@email.com",
         password: "$2a$10$608npxoLos.NngQkJUvU8e/7hgHTUNqGOLDgy/ZOh5CkWgL0ZuODq", // guus123
         secret: "GUUS", //uuidv4()
-        roleIds: ["user"]
+        roles: ["user"]
     },
 ];
 

@@ -151,8 +151,8 @@ router.delete("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
 
 function validatePassword(password) {
     if (typeof password == "string" &&
-        password.length >= 4 &&
-        password.length <= 20) {
+        password.length >= 6 &&
+        password.length <= 64) {
         return true;
     }
 

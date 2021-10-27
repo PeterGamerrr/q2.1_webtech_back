@@ -1,3 +1,5 @@
 > add a function to filter by date
 
-> hide password and secret if you request a user
+> !!validate username password and email on post!!
+
+> hash password on put and patch
