@@ -3,7 +3,7 @@ const {v4:uuidv4} = require("uuid");
 const fields = ["id", "username", "email", "password", "secret", "roles"];
 const fieldsToSend = ["id", "username", "email", "roles"];
 const fieldsToQuery = ["username", "email", "roles"];
-const fieldsToValidate = ["username", "email"];
+const fieldsToValidate = ["username", "email", "roles"];
 
 let users = [
     {

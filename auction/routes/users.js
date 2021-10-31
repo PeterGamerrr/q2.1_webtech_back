@@ -186,21 +186,18 @@ function checkUserValidity(user, allFields = false) {
             val.length < 3 ||
             val.length > 200)) {
             return false;
-        }
-        else if (key == "email" && (
+        } else if (key == "email" && (
             typeof val !== "string" ||
             val.length < 3 ||
             val.length > 200 ||
             !val.includes("@"))) {
             return false;
-        }
-        else if (key == "roles" && (
+        } else if (key == "roles" && (
             typeof val !== "array" ||
             val.length == 0 ||
             val.includes("admin"))) {
             return false;
-        }
-        else if (!fields.includes(key)) {
+        } else if (!fields.includes(key)) {
             return false;
         }
     }

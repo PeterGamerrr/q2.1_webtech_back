@@ -156,29 +156,24 @@ function checkAuctionValidity(auction, allFields = false) {
             typeof val !== "number" ||
             val <= 0)) {
             return false;
-        }
-        else if (key == "price" && (
+        } else if (key == "price" && (
             typeof val !== "number" ||
             val <= 0)) {
             return false;
-        }
-        else if (key == "startDate" && (
+        } else if (key == "startDate" && (
             typeof val !== "number" ||
             val <= 946681200000)) { // year 2000
             return false;
-        }
-        else if (key == "endDate" && (
+        } else if (key == "endDate" && (
             typeof val !== "number" ||
             val <= 946681200000)) { // year 2000
             return false;
-        }
-        else if (key == "productId" && (
+        } else if (key == "productId" && (
             typeof val !== "number" ||
             val < 0 ||
             products.findIndex(product => product.id == val) === -1)) {
             return false;
-        }
-        else if (!fields.includes(key)) {
+        } else if (!fields.includes(key)) {
             return false;
         }
     }

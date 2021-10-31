@@ -5,6 +5,7 @@ const isLoggedIn = require("../middleware/is-logged-in");
 const { hasAdmin } = require("../middleware/has-role");
 let { fields, bids, counter, fieldsToValidate} = require("../storage/bids");
 const {auctions} = require("../storage/auctions");
+const {users} = require("../storage/users");
 
 
 router.get("/", (req, res) => {
@@ -104,15 +105,24 @@ function checkBidValidity(bid, allFields = false) {
             typeof val !== "number" ||
             val < 0)) {
             return false;
-        }
-        else if (key == "auctionId" && (
+        } else if (key == "hasWon" && (
+            typeof val !== "boolean")) {
+            return false;
+        } else if (key == "date" && (
+            typeof val !== "number" ||
+            val <= 946681200000)) { // year 2000
+            return false;
+        } else if (key == "userId" && (
+            typeof val !== "number" ||
+            val < 0 ||
+            users.findIndex(user => user.id == val) === -1 )) {
+            return false;
+        } else if (key == "auctionId" && (
             typeof val !== "number" ||
             val < 0 ||
             auctions.findIndex(auction => auction.id == val) === -1 )) {
             return false;
-        }
-
-        else if (!fields.includes(key)) {
+        } else if (!fields.includes(key)) {
             return false;
         }
     }

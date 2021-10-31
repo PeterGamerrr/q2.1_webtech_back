@@ -156,22 +156,12 @@ function checkUserValidity(product, allFields = false) {
             val.length < 3 ||
             val.length > 128)) {
             return false;
-        }
-        else if (key == "startPrice" && (
-            typeof val !== "number" ||
-            val < 0 )){
-            return false;
-        }
-        else if (key == "endDate" && (
-            typeof val !== "number" ||
-            val < Date.now() - 30000)) {
-            return false;
-        } else if (key == "region" && (
+        } else if (key == "brand" && (
             typeof val !== "string" ||
             val.length <= 0 ||
             val.length > 128)) {
             return false;
-        } else if (key == "brand" && (
+        } else if (key == "region" && (
             typeof val !== "string" ||
             val.length <= 0 ||
             val.length > 128)) {
@@ -180,9 +170,7 @@ function checkUserValidity(product, allFields = false) {
             typeof val !== "number" ||
             val <= 0)) {
             return false;
-        }
-
-        else if (!fields.includes(key)) {
+        } else if (!fields.includes(key)) {
             return false;
         }
     }

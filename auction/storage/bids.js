@@ -1,5 +1,5 @@
 const fields = ["id", "price", "hasWon", "date", "userId", "auctionId"];
-const fieldsToValidate = ["price", "auctionId"];
+const fieldsToValidate = ["price", "hasWon", "date", "userId", "auctionId"];
 
 let bids = [
     {
