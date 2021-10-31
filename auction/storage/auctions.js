@@ -1,4 +1,5 @@
 const fields = ["id", "startPrice", "price", "startDate", "endDate", "productId"];
+const fieldsToQuery = ["startPrice", "price", "startDate", "endDate", "productId"];
 const fieldsToValidate = ["endDate", "productId"];
 
 let auctions = [
@@ -62,4 +63,4 @@ let auctions = [
 
 let counter = auctions.length - 1;
 
-module.exports = { fields ,fieldsToValidate, auctions, counter };
+module.exports = { fields, fieldsToQuery, fieldsToValidate, auctions, counter };

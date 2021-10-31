@@ -8,9 +8,8 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhb
 Content-Type: application/json
 
 {
-  "title": "Heineken Oud Bruin",
-  "endDate": 1632919941506,
-  "productId": 0
+  "endDate": 2635692478802,
+  "productId": 10
 }
 
 ###
@@ -32,9 +31,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "title": "Heineken Super Oud Bruin",
-  "endDate": 1632919941506,
-  "productId": 0
+  "endDate": 2635692478802,
+  "productId": 11
 }
 
 ###
@@ -48,7 +46,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "title": "Heineken extra Oud Bruin"
+  "price": 21
 }
 
 ###
