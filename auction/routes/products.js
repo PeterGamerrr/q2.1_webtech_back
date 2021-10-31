@@ -44,9 +44,8 @@ router.get("/:id", (req, res) => {
 });
 
 
-router.post("/", (req, res) => {
+router.post("/", isLoggedIn, hasAdmin, (req, res) => {
     let newProduct = req.body;
-
 
     if (!checkProductValidity(newProduct, true)) {
         return res
@@ -132,7 +131,6 @@ router.delete("/:id", isLoggedIn, hasAdmin, (req, res) => {
             .send("Product not found");
     }
     let product = products[productIndex]
-
 
     products.splice(productIndex, 1);
 

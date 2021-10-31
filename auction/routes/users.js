@@ -16,7 +16,7 @@ router.get("/", isLoggedIn, hasAdmin, (req, res) => {
     } else {
         usersToSend = sanitizeUserArray(users).filter(user => {
             for (const [key, val] of Object.entries(req.query)) {
-                if (user[key] !== undefined && user[key].toLowerCase() !== val.toLowerCase()) {
+                if (user[key] !== undefined && user[key].toString().toLowerCase() !== val.toLowerCase()) {
                     return false;
                 }
             }
@@ -62,7 +62,6 @@ router.post("/", (req, res) => {
     }
 
     counter++;
-
     newUser.id = counter;
     newUser.secret = uuidv4();
     newUser.roles = ["user"]
@@ -79,6 +78,8 @@ router.post("/", (req, res) => {
 
 
 router.put("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
+    let id = req.params.id;
+
     let newUser = req.body;
     if (!checkUserValidity(newUser, true)) {
         return res
@@ -106,6 +107,8 @@ router.put("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
 
 
 router.patch("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
+    let id = req.params.id;
+
     let newUser = req.body;
     if (!checkUserValidity(newUser)) {
         return res
@@ -133,13 +136,15 @@ router.patch("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
 
 
 router.delete("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
+    let id = req.params.id;
+
     let userIndex = users.findIndex(user => user.id == id);
-    let user = users[userIndex]
     if (userIndex == -1) {
         return res
             .status(StatusCodes.BAD_REQUEST)
             .send("User not found");
     }
+    let user = users[userIndex];
 
     users.splice(userIndex, 1);
 

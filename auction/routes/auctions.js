@@ -45,9 +45,8 @@ router.get("/:id", (req, res) => {
 });
 
 
-router.post("/", (req, res) => {
+router.post("/", isLoggedIn, hasAdmin, (req, res) => {
     let newAuction = req.body;
-
 
     if (!checkAuctionValidity(newAuction, true)) {
         return res
@@ -132,8 +131,7 @@ router.delete("/:id", isLoggedIn, hasAdmin, (req, res) => {
             .status(StatusCodes.BAD_REQUEST)
             .send("Auction not found");
     }
-    let auction = auctions[auctionIndex]
-
+    let auction = auctions[auctionIndex];
 
     auctions.splice(auctionIndex, 1);
 

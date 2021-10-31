@@ -46,7 +46,7 @@ router.get("/:id", (req, res) => {
 });
 
 
-router.post("/", isLoggedIn ,(req, res) => {
+router.post("/", isLoggedIn, isSelfOrAdmin, (req, res) => {
     let newBid = req.body;
 
     if (!checkBidValidity(newBid, true)) {
@@ -56,13 +56,12 @@ router.post("/", isLoggedIn ,(req, res) => {
     }
 
     counter++;
-
     newBid.id = counter;
     newBid.userId = req.user.id;
     newBid.hasWon = false;
     newBid.date = Date.now();
-    bids.push(newBid);
 
+    bids.push(newBid);
     res
         .status(StatusCodes.CREATED)
         .send(newBid);
@@ -127,13 +126,8 @@ router.patch("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
 });
 
 
-router.delete("/:id", isLoggedIn, (req, res) => {
+router.delete("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
     let id = req.params.id;
-    if (req.user.id !== id && !req.user.roles.includes("admin")) {
-        return res
-            .status(StatusCodes.UNAUTHORIZED)
-            .send("Not authorized");
-    }
 
     let bidIndex = bids.findIndex(bid => bid.id == id);
     if (bidIndex == -1) {
