@@ -68,6 +68,65 @@ router.post("/", isLoggedIn ,(req, res) => {
         .send(newBid);
 });
 
+
+router.put("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
+    let id = req.params.id;
+
+    let newBid = req.body;
+    if (!checkBidValidity(newBid, true)) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send("Bid not valid");
+    }
+
+    let bid = bids.find(bid => bid.id == id);
+    if (bid === undefined) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send("Bid not found");
+    }
+
+    fieldsToValidate.forEach(field => {
+        if (newBid[field] !== undefined) {
+            bid[field] = newBid[field];
+        }
+    });
+
+    res
+        .status(StatusCodes.OK)
+        .send(bid);
+});
+
+
+router.patch("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
+    let id = req.params.id;
+
+    let newBid = req.body;
+    if (!checkBidValidity(newBid)) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send("bid not valid");
+    }
+
+    let bid = bids.find(bid => bid.id == id);
+    if (bid === undefined) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send("bid not found");
+    }
+
+    fieldsToValidate.forEach(field => {
+        if (newBid[field] !== undefined) {
+            bid[field] = newBid[field];
+        }
+    });
+
+    res
+        .status(StatusCodes.OK)
+        .send(bid);
+});
+
+
 router.delete("/:id", isLoggedIn, (req, res) => {
     let id = req.params.id;
     if (req.user.id !== id && !req.user.roles.includes("admin")) {

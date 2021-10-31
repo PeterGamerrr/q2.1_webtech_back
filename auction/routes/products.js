@@ -48,7 +48,7 @@ router.post("/", (req, res) => {
     let newProduct = req.body;
 
 
-    if (!checkUserValidity(newProduct, true)) {
+    if (!checkProductValidity(newProduct, true)) {
         return res
             .status(StatusCodes.BAD_REQUEST)
             .send("Product not valid");
@@ -68,7 +68,7 @@ router.put("/:id", isLoggedIn, hasAdmin, (req, res) => {
     let id = req.params.id;
 
     let newProduct = req.body;
-    if (!checkUserValidity(newProduct, true)) {
+    if (!checkProductValidity(newProduct, true)) {
         return res
             .status(StatusCodes.BAD_REQUEST)
             .send("Product not valid");
@@ -97,7 +97,7 @@ router.patch("/:id", isLoggedIn, hasAdmin, (req, res) => {
     let id = req.params.id;
 
     let newProduct = req.body;
-    if (!checkUserValidity(newProduct)) {
+    if (!checkProductValidity(newProduct)) {
         return res
             .status(StatusCodes.BAD_REQUEST)
             .send("Product not valid");
@@ -142,7 +142,7 @@ router.delete("/:id", isLoggedIn, hasAdmin, (req, res) => {
 });
 
 
-function checkUserValidity(product, allFields = false) {
+function checkProductValidity(product, allFields = false) {
     let checkFields = {};
     fieldsToValidate.forEach(field => {
         checkFields[field] = false
