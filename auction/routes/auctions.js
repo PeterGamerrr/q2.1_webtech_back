@@ -3,7 +3,7 @@ const router = express.Router();
 const { StatusCodes } = require("http-status-codes");
 const isLoggedIn = require("../middleware/is-logged-in");
 const { hasAdmin } = require("../middleware/has-role");
-let { auctions, counter, fields, fieldsToQuery, fieldsToValidate } = require("../storage/auctions");
+let { auctions, counter, fields, fieldsToValidate } = require("../storage/auctions");
 const {products} = require("../storage/products");
 
 
@@ -82,7 +82,7 @@ router.put("/:id", isLoggedIn, hasAdmin, (req, res) => {
             .send("Auction not found");
     }
 
-    fieldsToQuery.forEach(field => {
+    fieldsToValidate.forEach(field => {
         if (newAuction[field] !== undefined) {
             auction[field] = newAuction[field];
         }
@@ -111,7 +111,7 @@ router.patch("/:id", isLoggedIn, hasAdmin, (req, res) => {
             .send("Auction not found");
     }
 
-    fieldsToQuery.forEach(field => {
+    fieldsToValidate.forEach(field => {
         if (newAuction[field] !== undefined) {
             auction[field] = newAuction[field];
         }
@@ -152,21 +152,30 @@ function checkAuctionValidity(auction, allFields = false) {
     for (const [key, val] of Object.entries(auction)) {
         checkFields[key] = true;
 
-        if (key == "title" && (
-            typeof val !== "string" ||
-            val.length < 3 ||
-            val.length > 512)) {
+        if (key == "startPrice" && (
+            typeof val !== "number" ||
+            val <= 0)) {
+            return false;
+        }
+        else if (key == "price" && (
+            typeof val !== "number" ||
+            val <= 0)) {
+            return false;
+        }
+        else if (key == "startDate" && (
+            typeof val !== "number" ||
+            val <= 946681200000)) { // year 2000
+            return false;
+        }
+        else if (key == "endDate" && (
+            typeof val !== "number" ||
+            val <= 946681200000)) { // year 2000
             return false;
         }
         else if (key == "productId" && (
             typeof val !== "number" ||
             val < 0 ||
-            products.findIndex(product => product.id == val) !== -1)) {
-            return false;
-        }
-        else if (key == "endDate" && (
-            typeof val !== "number" ||
-            val < Date.now() - 30000)) {
+            products.findIndex(product => product.id == val) === -1)) {
             return false;
         }
         else if (!fields.includes(key)) {

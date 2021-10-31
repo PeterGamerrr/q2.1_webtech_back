@@ -8,8 +8,11 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhb
 Content-Type: application/json
 
 {
+  "startPrice": 10,
+  "price": 10,
+  "startDate": 1635692478802,
   "endDate": 2635692478802,
-  "productId": 10
+  "productId": 0
 }
 
 ###
@@ -31,8 +34,11 @@ Accept: application/json
 Content-Type: application/json
 
 {
+  "startPrice": 10,
+  "price": 10,
+  "startDate": 1635692478802,
   "endDate": 2635692478802,
-  "productId": 11
+  "productId": 0
 }
 
 ###
