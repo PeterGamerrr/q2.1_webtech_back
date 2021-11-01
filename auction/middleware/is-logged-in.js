@@ -7,14 +7,14 @@ const isLoggedIn = (req, res, next) => {
     if (!token) {
         return res
             .status(StatusCodes.UNAUTHORIZED)
-            .send("Token missing in authorization header");
+            .json({error:"Token missing in authorization header"});
     }
 
     const payload = verifyToken(token);
     if (!payload) {
         return res
             .status(StatusCodes.UNAUTHORIZED)
-            .send("Token invalid");
+            .json({error:"Token invalid"});
     }
 
     req.user = users.find(user => user.id === payload.id);

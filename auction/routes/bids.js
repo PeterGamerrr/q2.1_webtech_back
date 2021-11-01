@@ -52,7 +52,7 @@ router.get("/", (req, res) => {
 
     res
         .status(StatusCodes.OK)
-        .send(bidsToSend);
+        .json(bidsToSend);
 });
 
 
@@ -62,12 +62,12 @@ router.get("/:id", (req, res) => {
     if (bid === undefined) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Bid not found");
+            .json({error:"Bid not found"});
     }
 
     res
         .status(StatusCodes.OK)
-        .send(bid);
+        .json(bid);
 });
 
 
@@ -77,14 +77,14 @@ router.post("/", isLoggedIn, (req, res) => {
     if (!checkBidValidity(newBid, true)) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Bid not valid");
+            .json({error:"Bid not valid"});
     }
 
     let msg = checkAuction(newBid);
     if (msg) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send(msg);
+            .json({msg});
     }
 
     counter++;
@@ -96,7 +96,7 @@ router.post("/", isLoggedIn, (req, res) => {
     bids.push(newBid);
     res
         .status(StatusCodes.CREATED)
-        .send(newBid);
+        .json(newBid);
 });
 
 
@@ -107,7 +107,7 @@ router.delete("/:id", isLoggedIn, (req, res) => {
     if (bidIndex == -1) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Bid not found");
+            .json({error:"Bid not found"});
     }
     let bid = bids[bidIndex];
 
@@ -121,19 +121,19 @@ router.delete("/:id", isLoggedIn, (req, res) => {
 
     res
         .status(StatusCodes.OK)
-        .send(bid);
+        .json(bid);
 });
 
 router.delete("/", isLoggedIn, hasAdmin, (req, res) => {
     if (process.env.NODE_ENV !== "dev") {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("This request can't be used in production.");
+            .json({error:"This request can't be used in production."});
     }
 
     res
         .status(StatusCodes.OK)
-        .send(bids);
+        .json(bids);
 
     bids = [];
     counter = -1;

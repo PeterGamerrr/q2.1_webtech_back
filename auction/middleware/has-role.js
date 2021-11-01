@@ -13,7 +13,7 @@ const isSelfOrAdmin = (req, res, next) => {
     if (req.user.id !== id && !req.user.roles.includes("admin")) {
         return res
             .status(StatusCodes.UNAUTHORIZED)
-            .send("Not authorized");
+            .json({error:"Not authorized"});
     }
 
     next();
@@ -23,7 +23,7 @@ const hasRole = (role, req, res, next) => {
     if (!req.user.roles.includes(role)) {
         return res
             .status(StatusCodes.UNAUTHORIZED)
-            .send(role + " role needed");
+            .json({error:role + " role needed"});
     }
 
     next();

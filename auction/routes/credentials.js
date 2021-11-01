@@ -34,23 +34,23 @@ router.post("", (req, res) => {
     if (!username) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Username missing in body");
+            .json({error:"Username missing in body"});
     } else if (!password) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Password missing in body");
+            .json({error:"Password missing in body"});
     }
 
     const token = login(username, password);
     if (!token) {
         return res
             .status(StatusCodes.UNAUTHORIZED)
-            .send("Username or password incorrect");
+            .json({error:"Username or password incorrect"});
     }
 
     res
         .status(StatusCodes.CREATED)
-        .send({
+        .json({
             token: token
         });
 });

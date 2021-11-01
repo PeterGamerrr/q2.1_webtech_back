@@ -26,7 +26,7 @@ router.get("/", (req, res) => {
 
     res
         .status(StatusCodes.OK)
-        .send(auctionsToSend);
+        .json(auctionsToSend);
 });
 
 
@@ -36,12 +36,12 @@ router.get("/:id", (req, res) => {
     if (auction === undefined) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Auction not found");
+            .json({error:"Auction not found"});
     }
 
     res
         .status(StatusCodes.OK)
-        .send(auction);
+        .json(auction);
 });
 
 
@@ -51,7 +51,7 @@ router.post("/", isLoggedIn, hasAdmin, (req, res) => {
     if (!checkAuctionValidity(newAuction, true)) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Auction not valid");
+            .json({error:"Auction not valid"});
     }
 
     counter++;
@@ -60,7 +60,7 @@ router.post("/", isLoggedIn, hasAdmin, (req, res) => {
     auctions.push(newAuction);
     res
         .status(StatusCodes.CREATED)
-        .send(newAuction);
+        .json(newAuction);
 });
 
 
@@ -71,14 +71,14 @@ router.put("/:id", isLoggedIn, hasAdmin, (req, res) => {
     if (!checkAuctionValidity(newAuction, true)) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Auction not valid");
+            .json({error:"Auction not valid"});
     }
 
     let auction = auctions.find(auction => auction.id == id);
     if (auction === undefined) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Auction not found");
+            .json({error:"Auction not found"});
     }
 
     fieldsToValidate.forEach(field => {
@@ -89,7 +89,7 @@ router.put("/:id", isLoggedIn, hasAdmin, (req, res) => {
 
     res
         .status(StatusCodes.OK)
-        .send(auction);
+        .json(auction);
 });
 
 
@@ -100,14 +100,14 @@ router.patch("/:id", isLoggedIn, hasAdmin, (req, res) => {
     if (!checkAuctionValidity(newAuction)) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Auction not valid");
+            .json({error:"Auction not valid"});
     }
 
     let auction = auctions.find(auction => auction.id == id);
     if (auction === undefined) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Auction not found");
+            .json({error:"Auction not found"});
     }
 
     fieldsToValidate.forEach(field => {
@@ -118,7 +118,7 @@ router.patch("/:id", isLoggedIn, hasAdmin, (req, res) => {
 
     res
         .status(StatusCodes.OK)
-        .send(auction);
+        .json(auction);
 });
 
 
@@ -129,7 +129,7 @@ router.delete("/:id", isLoggedIn, hasAdmin, (req, res) => {
     if (auctionIndex == -1) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Auction not found");
+            .json({error:"Auction not found"});
     }
     let auction = auctions[auctionIndex];
 
@@ -137,19 +137,19 @@ router.delete("/:id", isLoggedIn, hasAdmin, (req, res) => {
 
     res
         .status(StatusCodes.OK)
-        .send(auction);
+        .json(auction);
 });
 
 router.delete("/", isLoggedIn, hasAdmin, (req, res) => {
     if (process.env.NODE_ENV !== "dev") {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("This request can't be used in production.");
+            .json({error:"This request can't be used in production."});
     }
 
     res
         .status(StatusCodes.OK)
-        .send(auctions);
+        .json(auctions);
 
     auctions = [];
     counter = -1;

@@ -25,7 +25,7 @@ router.get("/", (req, res) => {
 
     res
         .status(StatusCodes.OK)
-        .send(productsToSend);
+        .json(productsToSend);
 });
 
 
@@ -35,12 +35,12 @@ router.get("/:id", (req, res) => {
     if (product === undefined) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Product not found");
+            .json({error:"Product not found"});
     }
 
     res
         .status(StatusCodes.OK)
-        .send(product);
+        .json(product);
 });
 
 
@@ -50,7 +50,7 @@ router.post("/", isLoggedIn, hasAdmin, (req, res) => {
     if (!checkProductValidity(newProduct, true)) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Product not valid");
+            .json({error:"Product not valid"});
     }
 
     counter++;
@@ -59,7 +59,7 @@ router.post("/", isLoggedIn, hasAdmin, (req, res) => {
     products.push(newProduct);
     res
         .status(StatusCodes.CREATED)
-        .send(newProduct);
+        .json(newProduct);
 });
 
 
@@ -70,14 +70,14 @@ router.put("/:id", isLoggedIn, hasAdmin, (req, res) => {
     if (!checkProductValidity(newProduct, true)) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Product not valid");
+            .json({err:"Product not valid"});
     }
 
     let product = products.find(product => product.id == id);
     if (product === undefined) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Product not found");
+            .json({err:"Product not found"});
     }
 
     fieldsToValidate.forEach(field => {
@@ -88,7 +88,7 @@ router.put("/:id", isLoggedIn, hasAdmin, (req, res) => {
 
     res
         .status(StatusCodes.OK)
-        .send(product);
+        .json(product);
 });
 
 
@@ -99,14 +99,14 @@ router.patch("/:id", isLoggedIn, hasAdmin, (req, res) => {
     if (!checkProductValidity(newProduct)) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Product not valid");
+            .json({error:"Product not valid"});
     }
 
     let product = products.find(product => product.id == id);
     if (product === undefined) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Product not found");
+            .json({error:"Product not found"});
     }
 
     fieldsToValidate.forEach(field => {
@@ -117,7 +117,7 @@ router.patch("/:id", isLoggedIn, hasAdmin, (req, res) => {
 
     res
         .status(StatusCodes.OK)
-        .send(product);
+        .json(product);
 });
 
 
@@ -128,7 +128,7 @@ router.delete("/:id", isLoggedIn, hasAdmin, (req, res) => {
     if (productIndex == -1) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("Product not found");
+            .json({error:"Product not found"});
     }
     let product = products[productIndex]
 
@@ -136,19 +136,19 @@ router.delete("/:id", isLoggedIn, hasAdmin, (req, res) => {
 
     res
         .status(StatusCodes.OK)
-        .send(product);
+        .json(product);
 });
 
 router.delete("/", isLoggedIn, hasAdmin, (req, res) => {
     if (process.env.NODE_ENV !== "dev") {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("This request can't be used in production.");
+            .json({error:"This request can't be used in production."});
     }
 
     res
         .status(StatusCodes.OK)
-        .send(products);
+        .json(products);
 
     products = [];
     counter = -1;
