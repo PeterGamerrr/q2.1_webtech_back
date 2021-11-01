@@ -48,6 +48,11 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
     let newUser = req.body;
+    if (newUser === undefined || Object.keys(newUser).length === 0) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json({error:"User empty"});
+    }
 
     if (!validatePassword(newUser.password)) {
         return res
@@ -170,13 +175,21 @@ router.delete("/", isLoggedIn, hasAdmin, (req, res) => {
 
 
 function validatePassword(password) {
-    if (typeof password == "string" &&
-        password.length >= 6 &&
-        password.length <= 64) {
-        return true;
+    if (typeof password != "string" &&
+        password.length < 6 &&
+        password.length > 64) {
+        return false;
     }
 
-    return false;
+    let hasCapital = false;
+    let hasNumber = false;
+
+    [...password].forEach(letter => {
+        if(letter === letter.toUpperCase()) hasCapital = true;
+        if(!isNaN(letter)) hasNumber = true;
+    })
+
+    return hasCapital && hasNumber;
 }
 
 function sanitizeUser(user) {
@@ -213,7 +226,6 @@ function checkUserValidity(user, allFields = false) {
             !val.includes("@"))) {
             return false;
         } else if (key == "roles" && (
-            typeof val !== "array" ||
             val.length == 0 ||
             val.includes("admin"))) {
             return false;
