@@ -8,6 +8,32 @@ const {auctions} = require("../storage/auctions");
 const {users} = require("../storage/users");
 
 
+setInterval(() => {
+    let prevAuctionIds = [];
+    for (let i=0; i<bids.length; i++) {
+        let auctionId = bids[i].auctionId;
+        if (prevAuctionIds.includes(auctionId))
+            continue;
+        prevAuctionIds.push(auctionId);
+
+        let auction = auctions.find(a => a.id == auctionId);
+        if (!auction || auction.endDate > Date.now())
+            continue;
+
+        let bidsOfAuction = bids.filter(b => b.auctionId == auctionId);
+        if (bidsOfAuction.find(b => b.hasWon))
+            continue;
+
+        let highestBid = bidsOfAuction[0];
+        bidsOfAuction.forEach(b => {
+            if (highestBid.price < b.price)
+                highestBid = b;
+        })
+        highestBid.hasWon = true;
+    }
+}, 500);
+
+
 router.get("/", (req, res) => {
     let bidsToSend = null;
 
