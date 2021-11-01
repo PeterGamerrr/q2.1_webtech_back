@@ -137,7 +137,6 @@ router.delete("/", isLoggedIn, hasAdmin, (req, res) => {
 
     bids = [];
     counter = -1;
-    auctions = require("../storage/auctions");
 });
 
 
