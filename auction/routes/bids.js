@@ -237,18 +237,6 @@ function checkBidValidity(bid, allFields = false) {
             typeof val !== "number" ||
             val < 0)) {
             return false;
-        } else if (key == "hasWon" && (
-            typeof val !== "boolean")) {
-            return false;
-        } else if (key == "date" && (
-            typeof val !== "number" ||
-            val <= 946681200000)) { // year 2000
-            return false;
-        } else if (key == "userId" && (
-            typeof val !== "number" ||
-            val < 0 ||
-            users.findIndex(user => user.id == val) === -1 )) {
-            return false;
         } else if (key == "auctionId" && (
             typeof val !== "number" ||
             val < 0)) {
