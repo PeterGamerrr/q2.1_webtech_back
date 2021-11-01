@@ -73,6 +73,44 @@ Content-Type: application/json
 %}
 
 
+### Post no authorization
+POST http://localhost:3000/api/auctions
+Accept: application/json
+
+> {%
+    client.test("Post no authorization", function() {
+        client.assert(response.status === 401);
+    });
+%}
+
+
+### Post no body
+POST http://localhost:3000/api/auctions
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+
+> {%
+    client.test("Post no body", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Post no values
+POST http://localhost:3000/api/auctions
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{}
+
+> {%
+    client.test("Post no values", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
 ### Get 0
 GET http://localhost:3000/api/auctions/0
 Accept: application/json
@@ -80,6 +118,28 @@ Accept: application/json
 > {%
     client.test("Get 0", function() {
         client.assert(response.status === 200);
+    });
+%}
+
+
+### Get id not a number
+GET http://localhost:3000/api/auctions/test
+Accept: application/json
+
+> {%
+    client.test("Get id not a number", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Get id out of range
+GET http://localhost:3000/api/auctions/test
+Accept: application/json
+
+> {%
+    client.test("Get id out of range", function() {
+        client.assert(response.status === 400);
     });
 %}
 
@@ -95,12 +155,23 @@ Accept: application/json
 %}
 
 
-### Get where productId 1
+### Get query productId 1
 GET http://localhost:3000/api/auctions?productId=1
 Accept: application/json
 
 > {%
-    client.test("Get where productId 1", function() {
+    client.test("Get query productId 1", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Get query fakeVar
+GET http://localhost:3000/api/auctions?fakeVar=0
+Accept: application/json
+
+> {%
+    client.test("Get query fakeVar", function() {
         client.assert(response.status === 200);
     });
 %}
@@ -127,6 +198,28 @@ Content-Type: application/json
 %}
 
 
+### Put additional var
+PUT http://localhost:3000/api/auctions/0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "fakeVar": 0,
+  "startPrice": 100,
+  "price": 100,
+  "startDate": 1635692478802,
+  "endDate": 2635692478802,
+  "productId": 0
+}
+
+> {%
+    client.test("Put additional var", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
 ### Patch 1
 PATCH http://localhost:3000/api/auctions/1
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
@@ -145,6 +238,23 @@ Content-Type: application/json
 %}
 
 
+### Patch var not in object
+PATCH http://localhost:3000/api/auctions/1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "fakeVar": 0
+}
+
+> {%
+    client.test("Patch var not in object", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
 ### Delete 2
 DELETE http://localhost:3000/api/auctions/2
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
@@ -153,6 +263,30 @@ Accept: application/json
 > {%
     client.test("Delete 2", function() {
         client.assert(response.status === 200);
+    });
+%}
+
+
+### Delete no admin role
+DELETE http://localhost:3000/api/auctions/2
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imd1dXNAZW1haWwuY29tIiwiaWQiOjEsInVzZXJuYW1lIjoiZ3V1cyIsInJvbGVzIjpbInVzZXIiXSwiaWF0IjoxNjM1NzI5OTY5fQ.GlBaXMAcc7La8FIUJfIqkzLMmCfjYu5PQqePW4ErsNo
+Accept: application/json
+
+> {%
+    client.test("Delete no admin role", function() {
+        client.assert(response.status === 401);
+    });
+%}
+
+
+### Delete id out of range
+DELETE http://localhost:3000/api/auctions/2
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+
+> {%
+    client.test("Delete id out of range", function() {
+        client.assert(response.status === 400);
     });
 %}
 
