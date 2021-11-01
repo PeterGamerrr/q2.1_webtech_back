@@ -31,7 +31,7 @@ setInterval(() => {
         })
         highestBid.hasWon = true;
     }
-}, 500);
+}, 1000);
 
 
 router.get("/", (req, res) => {
@@ -81,6 +81,13 @@ router.post("/", isLoggedIn, isSelfOrAdmin, (req, res) => {
             .send("Bid not valid");
     }
 
+    let msg = checkAuction(newBid);
+    if (msg) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send(msg);
+    }
+
     counter++;
     newBid.id = counter;
     newBid.userId = req.user.id;
@@ -102,6 +109,13 @@ router.put("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
         return res
             .status(StatusCodes.BAD_REQUEST)
             .send("Bid not valid");
+    }
+
+    let msg = checkAuction(newBid);
+    if (msg) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send(msg);
     }
 
     let bid = bids.find(bid => bid.id == id);
@@ -131,6 +145,13 @@ router.patch("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
         return res
             .status(StatusCodes.BAD_REQUEST)
             .send("bid not valid");
+    }
+
+    let msg = checkAuction(newBid);
+    if (msg) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send(msg);
     }
 
     let bid = bids.find(bid => bid.id == id);
@@ -186,6 +207,23 @@ router.delete("/", isLoggedIn, hasAdmin, (req, res) => {
 });
 
 
+function checkAuction(bid) {
+    let auction = auctions.find(auction => auction.id == bid.auctionId);
+    if (!auction)
+        return "The auction of the bid doesn't exist.";
+
+    if (auction.endDate >= Date.now())
+        return "The auction has ended already.";
+
+    if (auction.startDate > bid.date)
+        return "The auction hasn't started yet.";
+
+    if (bids.filter(b => b.auctionId == bid.auctionId)
+        .find(b => b.price >= bid.price))
+        return "Someone already bid higher than you.";
+}
+
+
 function checkBidValidity(bid, allFields = false) {
     let checkFields = {};
     fieldsToValidate.forEach(field => {
@@ -213,8 +251,7 @@ function checkBidValidity(bid, allFields = false) {
             return false;
         } else if (key == "auctionId" && (
             typeof val !== "number" ||
-            val < 0 ||
-            auctions.findIndex(auction => auction.id == val) === -1 )) {
+            val < 0)) {
             return false;
         } else if (!fields.includes(key)) {
             return false;
