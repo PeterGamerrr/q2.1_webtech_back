@@ -73,11 +73,6 @@ router.get("/:id", (req, res) => {
 
 router.post("/", isLoggedIn, (req, res) => {
     let newBid = req.body;
-    if (newBid.userId != req.user.id) {
-        return res
-            .status(StatusCodes.UNAUTHORIZED)
-            .send("Not authorized");
-    }
 
     if (!checkBidValidity(newBid, true)) {
         return res
