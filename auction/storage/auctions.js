@@ -4,19 +4,19 @@ const fieldsToValidate = ["startPrice", "price", "startDate", "endDate", "produc
 let auctions = [
     {
         id: 0,
-        startPrice: 25,
-        price: 30.2,
+        startPrice: 10,
+        price: 10,
         startDate: new Date(2020, 0).getTime(),
         endDate: new Date(2022, 0).getTime(),
         productId: 0
     },
     {
         id: 1,
-        startPrice: 23,
-        price: 25.6,
-        startDate: new Date(2005, 0).getTime(),
-        endDate: new Date(2007, 0).getTime(),
-        productId: 1
+        startPrice: 11,
+        price: 11,
+        startDate: new Date(2020, 0).getTime(),
+        endDate: new Date(2022, 0).getTime(),
+        productId: 0
     },
     {
         id: 2,

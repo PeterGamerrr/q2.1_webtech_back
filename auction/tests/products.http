@@ -1,10 +1,292 @@
-### get product 0
+### Empty test data
+DELETE http://localhost:3000/api/products
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+
+> {%
+    client.test("Empty test data", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Post 0
+POST http://localhost:3000/api/products
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Heineken Oud Bruin",
+  "brand": "Heineken",
+  "region": "Amsterdam",
+  "capacity": 250
+}
+
+> {%
+    client.test("Post 0", function() {
+        client.assert(response.status === 201);
+    });
+%}
+
+
+### Post 1
+POST http://localhost:3000/api/products
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Heineken Oud Bruin",
+  "brand": "Heineken",
+  "region": "Amsterdam",
+  "capacity": 250
+}
+
+> {%
+    client.test("Post 1", function() {
+        client.assert(response.status === 201);
+    });
+%}
+
+
+### Post 2
+POST http://localhost:3000/api/products
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "Heineken Oud Bruin",
+  "brand": "Heineken",
+  "region": "Amsterdam",
+  "capacity": 333
+}
+
+> {%
+    client.test("Post 2", function() {
+        client.assert(response.status === 201);
+    });
+%}
+
+
+### Post no authorization
+POST http://localhost:3000/api/products
+Accept: application/json
+
+> {%
+    client.test("Post no authorization", function() {
+        client.assert(response.status === 401);
+    });
+%}
+
+
+### Post no body
+POST http://localhost:3000/api/products
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+
+> {%
+    client.test("Post no body", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Post no values
+POST http://localhost:3000/api/products
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{}
+
+> {%
+    client.test("Post no values", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Get 0
 GET http://localhost:3000/api/products/0
 Accept: application/json
 
 > {%
-client.test("testing if product 0 works", function() {
-    client.assert(!!response.body && response.status === 200, "product 0 works" )
-});
+    client.test("Get 0", function() {
+        client.assert(response.status === 200);
+    });
 %}
-###
+
+
+### Get id not a number
+GET http://localhost:3000/api/products/test
+Accept: application/json
+
+> {%
+    client.test("Get id not a number", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Get id out of range
+GET http://localhost:3000/api/products/50
+Accept: application/json
+
+> {%
+    client.test("Get id out of range", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Get all
+GET http://localhost:3000/api/products
+Accept: application/json
+
+> {%
+    client.test("Get all", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Get query capacity 250
+GET http://localhost:3000/api/products?capacity=250
+Accept: application/json
+
+> {%
+    client.test("Get query capacity 250", function() {
+        client.assert(response.status === 200);
+        client.assert(Object.keys(response.body).length === 2);
+    });
+%}
+
+
+### Get query fakeVar
+GET http://localhost:3000/api/products?fakeVar=0
+Accept: application/json
+
+> {%
+    client.test("Get query fakeVar", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Put 0
+PUT http://localhost:3000/api/products/0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Heineken Oud Bruin",
+  "brand": "Heineken",
+  "region": "Amsterdam",
+  "capacity": 330
+}
+
+> {%
+    client.test("Put 0", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Put additional var
+PUT http://localhost:3000/api/products/0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "fakeVar": 0,
+  "name": "Heineken Oud Bruin",
+  "brand": "Heineken",
+  "region": "Amsterdam",
+  "capacity": 330
+}
+
+> {%
+    client.test("Put additional var", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Patch 1
+PATCH http://localhost:3000/api/products/1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "capacity": 330
+}
+
+> {%
+    client.test("Patch 1", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Patch var not in object
+PATCH http://localhost:3000/api/products/1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "fakeVar": 0
+}
+
+> {%
+    client.test("Patch var not in object", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Delete 2
+DELETE http://localhost:3000/api/products/2
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+
+> {%
+    client.test("Delete 2", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Delete no admin role
+DELETE http://localhost:3000/api/products/2
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imd1dXNAZW1haWwuY29tIiwiaWQiOjEsInVzZXJuYW1lIjoiZ3V1cyIsInJvbGVzIjpbInVzZXIiXSwiaWF0IjoxNjM1NzI5OTY5fQ.GlBaXMAcc7La8FIUJfIqkzLMmCfjYu5PQqePW4ErsNo
+Accept: application/json
+
+> {%
+    client.test("Delete no admin role", function() {
+        client.assert(response.status === 401);
+    });
+%}
+
+
+### Delete id out of range
+DELETE http://localhost:3000/api/products/2
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+
+> {%
+    client.test("Delete id out of range", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Get all to check results
+GET http://localhost:3000/api/products
+Accept: application/json

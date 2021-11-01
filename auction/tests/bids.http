@@ -1,33 +1,198 @@
-GET http://localhost:3000/api/bids
+### Empty test data
+DELETE http://localhost:3000/api/bids
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 Accept: application/json
 
+> {%
+    client.test("Empty test data", function() {
+        client.assert(response.status === 200);
+    });
+%}
 
-###
+
+### Post 0
 POST http://localhost:3000/api/bids
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
 Content-Type: application/json
 
 {
-  "price": 100,
+  "price": 10,
   "auctionId": 0
 }
 
-###
-GET http://localhost:3000/api/bids
+> {%
+    client.test("Post 0", function() {
+        client.assert(response.status === 201);
+    });
+%}
+
+
+### Post 1
+POST http://localhost:3000/api/bids
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "price": 11,
+  "auctionId": 0
+}
+
+> {%
+    client.test("Post 1", function() {
+        client.assert(response.status === 201);
+    });
+%}
+
+
+### Post 2
+POST http://localhost:3000/api/bids
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "price": 12,
+  "auctionId": 1
+}
+
+> {%
+    client.test("Post 2", function() {
+        client.assert(response.status === 201);
+    });
+%}
+
+
+### Post no authorization
+POST http://localhost:3000/api/bids
 Accept: application/json
 
-###
-GET http://localhost:3000/api/bids?hasWon=true&userId=1
+> {%
+    client.test("Post no authorization", function() {
+        client.assert(response.status === 401);
+    });
+%}
+
+
+### Post no body
+POST http://localhost:3000/api/bids
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 Accept: application/json
 
-###
+> {%
+    client.test("Post no body", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Post no values
+POST http://localhost:3000/api/bids
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{}
+
+> {%
+    client.test("Post no values", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Get 0
 GET http://localhost:3000/api/bids/0
 Accept: application/json
 
-###
+> {%
+    client.test("Get 0", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Get id not a number
+GET http://localhost:3000/api/bids/test
+Accept: application/json
+
+> {%
+    client.test("Get id not a number", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Get id out of range
+GET http://localhost:3000/api/bids/50
+Accept: application/json
+
+> {%
+    client.test("Get id out of range", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Get all
+GET http://localhost:3000/api/bids
+Accept: application/json
+
+> {%
+    client.test("Get all", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Get query auctionId 0
+GET http://localhost:3000/api/bids?auctionId=0
+Accept: application/json
+
+> {%
+    client.test("Get query auctionId 0", function() {
+        client.assert(response.status === 200);
+        client.assert(Object.keys(response.body).length === 2);
+    });
+%}
+
+
+### Get query fakeVar
+GET http://localhost:3000/api/bids?fakeVar=0
+Accept: application/json
+
+> {%
+    client.test("Get query fakeVar", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Delete 2
 DELETE http://localhost:3000/api/bids/2
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 Accept: application/json
 
-###
+> {%
+    client.test("Delete 2", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Delete id out of range
+DELETE http://localhost:3000/api/bids/2
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+
+> {%
+    client.test("Delete id out of range", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Get all to check results
 GET http://localhost:3000/api/bids
+Accept: application/json

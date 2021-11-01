@@ -134,7 +134,7 @@ Accept: application/json
 
 
 ### Get id out of range
-GET http://localhost:3000/api/auctions/test
+GET http://localhost:3000/api/auctions/50
 Accept: application/json
 
 > {%
@@ -155,13 +155,14 @@ Accept: application/json
 %}
 
 
-### Get query productId 1
-GET http://localhost:3000/api/auctions?productId=1
+### Get query productId 0
+GET http://localhost:3000/api/auctions?productId=0
 Accept: application/json
 
 > {%
-    client.test("Get query productId 1", function() {
+    client.test("Get query productId 0", function() {
         client.assert(response.status === 200);
+        client.assert(Object.keys(response.body).length === 2);
     });
 %}
 

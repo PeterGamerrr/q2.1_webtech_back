@@ -1,58 +1,274 @@
-GET http://localhost:3000/api/users
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsImlhdCI6MTYzNTMyMTgyMH0.ESDmQCcygg9_e8RlWrELm54dlhTkRFxIZ6ASCioJKHw
+### Empty test data
+DELETE http://localhost:3000/api/users
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 Accept: application/json
 
 > {%
- client.test("get all users" , function () {
-     client.assert(response.status === 200, "got all user requests")
- });
- %}
+    client.test("Empty test data", function() {
+        client.assert(response.status === 200);
+    });
+%}
 
-###
-GET http://localhost:3000/api/users?email=gerralt@email.com
+
+### Post 0
+POST http://localhost:3000/api/users
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "zero",
+  "email": "zero@email.com",
+  "roles": ["user"]
+}
+
+> {%
+    client.test("Post 0", function() {
+        client.assert(response.status === 201);
+    });
+%}
+
+
+### Post 1
+POST http://localhost:3000/api/users
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "one",
+  "email": "one@email.com",
+  "roles": ["user"]
+}
+
+> {%
+    client.test("Post 1", function() {
+        client.assert(response.status === 201);
+    });
+%}
+
+
+### Post 2
+POST http://localhost:3000/api/users
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "two",
+  "email": "two@email.com",
+  "roles": ["user", "admin"]
+}
+
+> {%
+    client.test("Post 2", function() {
+        client.assert(response.status === 201);
+    });
+%}
+
+
+### Post no authorization
+POST http://localhost:3000/api/users
+Accept: application/json
+
+> {%
+    client.test("Post no authorization", function() {
+        client.assert(response.status === 401);
+    });
+%}
+
+
+### Post no body
+POST http://localhost:3000/api/users
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 Accept: application/json
 
+> {%
+    client.test("Post no body", function() {
+        client.assert(response.status === 400);
+    });
+%}
 
-###
+
+### Post no values
+POST http://localhost:3000/api/users
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{}
+
+> {%
+    client.test("Post no values", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Get 0
 GET http://localhost:3000/api/users/0
 Accept: application/json
 
-###
-POST http://localhost:3000/api/users/
-Content-Type: application/json
+> {%
+    client.test("Get 0", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Get id not a number
+GET http://localhost:3000/api/users/test
 Accept: application/json
 
-{
-  "username": "guus",
-  "email": "guus@email.com",
-  "password": "test"
-}
+> {%
+    client.test("Get id not a number", function() {
+        client.assert(response.status === 400);
+    });
+%}
 
-###
+
+### Get id out of range
+GET http://localhost:3000/api/users/50
+Accept: application/json
+
+> {%
+    client.test("Get id out of range", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Get all
+GET http://localhost:3000/api/users
+Accept: application/json
+
+> {%
+    client.test("Get all", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Get query fakeVar
+GET http://localhost:3000/api/users?fakeVar=0
+Accept: application/json
+
+> {%
+    client.test("Get query fakeVar", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Put 0
 PUT http://localhost:3000/api/users/0
-Content-Type: application/json
-Accept: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
 
 {
-  "id": 0,
-  "username": "gerrald",
-  "email": "gerralt@email.com",
-  "password": "$2a$10$N4Do4jE7/DGpGCPkP2avsekQxd1pYKLvqedIBce/trNpL4hB8MMK."
+  "username": "newZero",
+  "email": "newZero@email.com",
+  "roles": ["user"]
 }
 
-###
-PATCH http://localhost:3000/api/users/0
-Content-Type: application/json
-Accept: application/json
+> {%
+    client.test("Put 0", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Put additional var
+PUT http://localhost:3000/api/users/0
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
 
 {
-  "username": "geraldt"
+  "fakeVar": 0,
+  "username": "newZero",
+  "email": "newZero@email.com",
+  "roles": ["user"]
 }
 
-###
-DELETE http://localhost:3000/api/users/1
+> {%
+    client.test("Put additional var", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Patch 1
+PATCH http://localhost:3000/api/users/1
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "newOne"
+}
+
+> {%
+    client.test("Patch 1", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Patch var not in object
+PATCH http://localhost:3000/api/users/1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+Content-Type: application/json
+
+{
+  "fakeVar": 0
+}
+
+> {%
+    client.test("Patch var not in object", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Delete 2
+DELETE http://localhost:3000/api/users/2
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+
+> {%
+    client.test("Delete 2", function() {
+        client.assert(response.status === 200);
+    });
+%}
+
+
+### Delete no admin role
+DELETE http://localhost:3000/api/users/2
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imd1dXNAZW1haWwuY29tIiwiaWQiOjEsInVzZXJuYW1lIjoiZ3V1cyIsInJvbGVzIjpbInVzZXIiXSwiaWF0IjoxNjM1NzI5OTY5fQ.GlBaXMAcc7La8FIUJfIqkzLMmCfjYu5PQqePW4ErsNo
+Accept: application/json
+
+> {%
+    client.test("Delete no admin role", function() {
+        client.assert(response.status === 401);
+    });
+%}
+
+
+### Delete id out of range
+DELETE http://localhost:3000/api/users/2
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
+
+> {%
+    client.test("Delete id out of range", function() {
+        client.assert(response.status === 400);
+    });
+%}
+
+
+### Get all to check results
+GET http://localhost:3000/api/users
 Accept: application/json
