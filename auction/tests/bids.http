@@ -17,7 +17,7 @@ GET http://localhost:3000/api/bids
 Accept: application/json
 
 ###
-GET http://localhost:3000/api/bids?hasWon=true
+GET http://localhost:3000/api/bids?hasWon=true&userId=1
 Accept: application/json
 
 ###
