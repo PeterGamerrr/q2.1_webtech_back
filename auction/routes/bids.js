@@ -212,7 +212,7 @@ function checkAuction(bid) {
     if (!auction)
         return "The auction of the bid doesn't exist.";
 
-    if (auction.endDate >= Date.now())
+    if (auction.endDate <= Date.now())
         return "The auction has ended already.";
 
     if (auction.startDate > bid.date)
