@@ -5,6 +5,7 @@ const {v4:uuidv4} = require("uuid");
 const bcrypt = require("bcrypt");
 const isLoggedIn = require("../middleware/is-logged-in");
 const { isSelfOrAdmin, hasAdmin } = require("../middleware/has-role");
+const re = /^\S+@\S+\.(com|nl)$/; //matches all email formats ending in .com and .nl
 let { fields, fieldsToValidate, users, counter } = require("../storage/users");
 
 
@@ -223,7 +224,7 @@ function checkUserValidity(user, allFields = false) {
             typeof val !== "string" ||
             val.length < 3 ||
             val.length > 200 ||
-            !val.includes("@"))) {
+            !re.test(val))) {
             return false;
         } else if (key == "roles" && (
             val.length == 0 ||
