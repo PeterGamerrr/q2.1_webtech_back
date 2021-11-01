@@ -144,6 +144,21 @@ router.delete("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
         .send(bid);
 });
 
+router.delete("/", isLoggedIn, hasAdmin, (req, res) => {
+    if (process.env.NODE_ENV !== "dev") {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .send("This request can't be used in production.");
+    }
+
+    res
+        .status(StatusCodes.OK)
+        .send(bids);
+
+    bids = [];
+    counter = -1;
+});
+
 
 function checkBidValidity(bid, allFields = false) {
     let checkFields = {};

@@ -1,10 +1,12 @@
-GET http://localhost:3000/api/auctions
+### Empty test data
+DELETE http://localhost:3000/api/auctions
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 Accept: application/json
 
-
-###
+### Post 0
 POST http://localhost:3000/api/auctions
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
+Accept: application/json
 Content-Type: application/json
 
 {
@@ -15,55 +17,76 @@ Content-Type: application/json
   "productId": 0
 }
 
-###
-GET http://localhost:3000/api/auctions
+### Post 1
+POST http://localhost:3000/api/auctions
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 Accept: application/json
+Content-Type: application/json
 
-###
-GET http://localhost:3000/api/auctions?id=0
+{
+  "startPrice": 11,
+  "price": 11,
+  "startDate": 1635692478802,
+  "endDate": 2635692478802,
+  "productId": 0
+}
+
+### Post 2
+POST http://localhost:3000/api/auctions
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 Accept: application/json
+Content-Type: application/json
 
-###
+{
+  "startPrice": 12,
+  "price": 12,
+  "startDate": 1635692478802,
+  "endDate": 2635692478802,
+  "productId": 1
+}
+
+### Get 0
 GET http://localhost:3000/api/auctions/0
 Accept: application/json
 
-###
+### Get all
+GET http://localhost:3000/api/auctions
+Accept: application/json
+
+### Get where productId 1
+GET http://localhost:3000/api/auctions?productId=1
+Accept: application/json
+
+### Put 0
 PUT http://localhost:3000/api/auctions/0
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 Accept: application/json
 Content-Type: application/json
 
 {
-  "startPrice": 10,
-  "price": 10,
+  "startPrice": 100,
+  "price": 100,
   "startDate": 1635692478802,
   "endDate": 2635692478802,
   "productId": 0
 }
 
-###
-GET http://localhost:3000/api/auctions/0
-Accept: application/json
-
-###
-PATCH http://localhost:3000/api/auctions/0
+### Patch 1
+PATCH http://localhost:3000/api/auctions/1
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 Accept: application/json
 Content-Type: application/json
 
 {
-  "price": 21
+  "startPrice": 110,
+  "price": 110
 }
 
-###
-GET http://localhost:3000/api/auctions/0
-Accept: application/json
-
-
-###
+### Delete 2
 DELETE http://localhost:3000/api/auctions/2
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcnJhbHRAZW1haWwuY29tIiwiaWQiOjAsInVzZXJuYW1lIjoiZ2VycmFsdCIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE2MzI2NjA2MDZ9.GUKQJiEHHX3C_abjJj3TSxQxxmU8arPz5iaHokjxd4M
 Accept: application/json
 
-###
+### Get all to check results
 GET http://localhost:3000/api/auctions
+Accept: application/json
