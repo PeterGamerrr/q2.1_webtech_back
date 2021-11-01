@@ -4,8 +4,7 @@ const { StatusCodes } = require("http-status-codes");
 const isLoggedIn = require("../middleware/is-logged-in");
 const { hasAdmin, isSelfOrAdmin} = require("../middleware/has-role");
 let { fields, bids, counter, fieldsToValidate} = require("../storage/bids");
-const {auctions} = require("../storage/auctions");
-const {users} = require("../storage/users");
+let {auctions} = require("../storage/auctions");
 
 
 setInterval(() => {
@@ -72,7 +71,7 @@ router.get("/:id", (req, res) => {
 });
 
 
-router.post("/", isLoggedIn, isSelfOrAdmin, (req, res) => {
+router.post("/", isLoggedIn, (req, res) => {
     let newBid = req.body;
 
     if (!checkBidValidity(newBid, true)) {
@@ -101,79 +100,7 @@ router.post("/", isLoggedIn, isSelfOrAdmin, (req, res) => {
 });
 
 
-router.put("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
-    let id = req.params.id;
-
-    let newBid = req.body;
-    if (!checkBidValidity(newBid, true)) {
-        return res
-            .status(StatusCodes.BAD_REQUEST)
-            .json({error: "Bid not valid"});
-    }
-
-    let msg = checkAuction(newBid);
-    if (msg) {
-        return res
-            .status(StatusCodes.BAD_REQUEST)
-            .json({msg});
-    }
-
-    let bid = bids.find(bid => bid.id == id);
-    if (bid === undefined) {
-        return res
-            .status(StatusCodes.BAD_REQUEST)
-            .json({error:"Bid not found"});
-    }
-
-    fieldsToValidate.forEach(field => {
-        if (newBid[field] !== undefined) {
-            bid[field] = newBid[field];
-        }
-    });
-
-    res
-        .status(StatusCodes.OK)
-        .json(bid);
-});
-
-
-router.patch("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
-    let id = req.params.id;
-
-    let newBid = req.body;
-    if (!checkBidValidity(newBid)) {
-        return res
-            .status(StatusCodes.BAD_REQUEST)
-            .json("bid not valid");
-    }
-
-    let msg = checkAuction(newBid);
-    if (msg) {
-        return res
-            .status(StatusCodes.BAD_REQUEST)
-            .json({msg});
-    }
-
-    let bid = bids.find(bid => bid.id == id);
-    if (bid === undefined) {
-        return res
-            .status(StatusCodes.BAD_REQUEST)
-            .json({error:"bid not found"});
-    }
-
-    fieldsToValidate.forEach(field => {
-        if (newBid[field] !== undefined) {
-            bid[field] = newBid[field];
-        }
-    });
-
-    res
-        .status(StatusCodes.OK)
-        .json(bid);
-});
-
-
-router.delete("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
+router.delete("/:id", isLoggedIn, (req, res) => {
     let id = req.params.id;
 
     let bidIndex = bids.findIndex(bid => bid.id == id);
@@ -183,6 +110,12 @@ router.delete("/:id", isLoggedIn, isSelfOrAdmin, (req, res) => {
             .json({error:"Bid not found"});
     }
     let bid = bids[bidIndex];
+
+    if (bid.userId != req.user.id) {
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .send("Not authorized");
+    }
 
     bids.splice(bidIndex, 1);
 
@@ -204,6 +137,7 @@ router.delete("/", isLoggedIn, hasAdmin, (req, res) => {
 
     bids = [];
     counter = -1;
+    auctions = require("../storage/auctions");
 });
 
 
@@ -215,7 +149,7 @@ function checkAuction(bid) {
     if (auction.endDate <= Date.now())
         return "The auction has ended already.";
 
-    if (auction.startDate > bid.date)
+    if (auction.startDate > Date.now())
         return "The auction hasn't started yet.";
 
     if (bids.filter(b => b.auctionId == bid.auctionId)
